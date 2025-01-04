@@ -255,10 +255,13 @@ else:
     max_volatility = df_result[VOLATILITY].max()
 
 # Recebe valores que definem os limites de filtro
-MIN_PROFITABILITY = st.sidebar.number_input("Min_Profitability", value = min_profitability)
-MAX_PROFITABILITY = st.sidebar.number_input("Max_Profitability", value = max_profitability)
-MIN_VOLATILITY  = st.sidebar.number_input("Min_Volatility", value = min_volatility)
-MAX_VOLATILITY  = st.sidebar.number_input("Max_Volatility", value = max_volatility)
+MIN_PROFITABILITY, MAX_PROFITABILITY = st.sidebar.slider(
+    "Profitability", value = (min_profitability, max_profitability)
+    )
+
+MIN_VOLATILITY, MAX_VOLATILITY = st.sidebar.slider(
+    "Volatility", value = (min_volatility, max_volatility)
+    )
 
 # Prepara os dados para criar os gráficos
 df_result_chart = clean_to_chart(df_result, SCORE_TYPE, MAX_PROFITABILITY, MAX_VOLATILITY, MIN_PROFITABILITY, MIN_VOLATILITY)
