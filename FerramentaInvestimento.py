@@ -28,24 +28,23 @@ import os                                                                       
 import sys
 import numpy as np                                                                                                                          # Biblioteca para manuseio de dados em matriz e distribuições
 import pandas as pd                                                                                                                         # Biblioteca para manuseio de dados em DataFrame
+from pandas import json_normalize
 
+# Bibliotecas para criar web apps
 from io import BytesIO                                                                                                                      # Biblioteca para manuseio de dados binários
-
 import streamlit as st                                                                                                                      # Biblioteca para criar web apps
 
+# Bibliotecas de manipulação de dados e webscrapping
+import http.client
+
+# Bibliotecas para manipulação de datas e horas
 import time                                                                                                                                 # Biblioteca que permite realizar operações relacionadas com tempo 
 from   datetime import timedelta                                                                                                            # Biblioteca para calcular duração de trechos do código
 from   datetime import datetime                                                                                                             # Biblioteca para dizer data de hoje
-import warnings
 
 # Biblioteca para criar gráficos
 import plotly.express as px
 import plotly.io as pio
-
-# from SuperCarteira_WebScraping.py import (
-#     clean_to_chart,
-#     chart_interactive
-# )       
 
 # Adiciona o caminho para a pasta principal ao caminho do sistema
 sys.path.append(os.path.join(os.path.dirname(sys.path[0])))
@@ -59,13 +58,24 @@ wdir = wdir.replace("\\", "/")                                                  
 os.chdir(wdir)                                                                                                                              # Define esse como o diretório padrão para esse algoritimo
 
 # Cria um caminho para puxar os dados brutos e outro para o armazenamento dos resultados
-Inputs_path  = "/01. Inputs/"
-Results_path = "/02. Results/"
+input_path = wdir + "/01. Input"
+output_path = wdir + "/02. Output"
 
 
 # --------------------------------------------------------------- 02. COCKPIT --------------------------------------------------------------
 
 
+
+# Setup para conexão com API
+conn = http.client.HTTPSConnection("api.maisretorno.com")
+payload = ""
+headers = { 'User-Agent': "insomnia/8.6.1" }
+
+# Nome das categorias da SuperCarteira
+list_categorias = ["ANTIFRAGILIDADE", "DIVERSIFICACAO", "ESTABILIDADE", "VALORIZACAO", "OUTROS"]
+
+# Tempo de espera entre requisições
+SLEEP_SECONDS = 2
 
 # Define as opções de score que podem ser escolhidas
 SCORE_OPTIONS = ["12m", "36m", "60m", "begin"]
@@ -75,6 +85,280 @@ SCORE_OPTIONS = ["12m", "36m", "60m", "begin"]
 # -------------------------------------------------------------- 03. FUNCTIONS -------------------------------------------------------------
 
 
+
+######### Webscrapping ########
+# Função que pega cnpj de gestora de fundos de investimento desta categoria e adiciona ao df de ativos
+def get_cnpj(
+    dm_ativos: pd.DataFrame,
+    json_path: str,
+    categoria: str
+):
+    """
+    Função que pega cnpj de gestora de fundos de investimento desta categoria e adiciona ao df de ativos
+
+    Args:
+        dm_ativos (pd.DataFrame): DataFrame com CNPJ de gestoras de fundos de investimento
+        json_path (str): Caminho do arquivo json com informações sobre fundos de investimento
+        categoria (str): Categoria de ativos
+
+    Returns:
+        pd.DataFrame: DataFrame com CNPJ de gestoras de fundos de investimento
+
+    """
+    # Le json
+    super_carteira = pd.read_json(json_path)
+
+    # Normaliza json
+    super_carteira_norm = json_normalize(super_carteira[categoria])
+
+    # Faz com que cnpj tenha comente numeros
+    cnpj = (
+        super_carteira_norm["cnpj"]
+        .str.replace("/", "", regex = False)
+        .str.replace(".", "", regex = False)
+        .str.replace("-", "", regex = False)
+    )
+
+    # Cria df temporario com coluna de cnpj e coluna com categoria de ativo
+    df_temp = pd.DataFrame({
+        "cnpj": cnpj,
+        "categoria": categoria
+    })
+
+    # Append o df temporario no df de ativos
+    dm_ativos = pd.concat([dm_ativos, df_temp])
+    
+    return dm_ativos
+
+
+# Function to calculate mean ignoring null values  
+def calculate_mean(
+    row
+    ):  
+    """
+    Função que calcula a média igrnorando valores nulos
+
+    Args:
+        row (pd.DataFrame): DataFrame com CNPJ de gestoras de fundos de invest
+
+    Returns:
+        np.mean: Média dos scores
+    """
+
+    # Utiliza as colunas com scores de 12m, 36m, 60m e begin para fazer a média
+    scores = [row['score_12m'], row['score_36m'], row['score_60m'], row['score_begin']]
+
+    # Lista comprehension para pegar apenas valores não nulos
+    scores = [score for score in scores if pd.notnull(score)]  
+
+    # Retorna a média dos scores
+    return np.mean(scores)  
+
+
+# Function to calculate std ignoring null values  
+def calculate_std(
+    row
+    ):  
+    """
+    Função que calcula o desvio padrão ignorando valores nulos
+
+    Args:
+        row (pd.DataFrame): DataFrame com CNPJ de gestoras de fundos de invest
+
+    Returns:
+        np.std: Desvio padrão dos scores
+    """
+
+    # Utiliza as colunas com scores de 12m, 36m, 60m e begin para fazer o desvio padrão
+    scores = [row['score_12m'], row['score_36m'], row['score_60m'], row['score_begin']]  
+
+    # Conta quantos valores nulos tem
+    null_count = sum(pd.isnull(score) for score in scores)
+
+    # Se tiver 3 valores nulos, então retorna o score de begin
+    if null_count == 3:  
+        return row['score_begin']
+
+    # Caso contrário, pega apenas valores não nulos
+    else:  
+        scores = [score for score in scores if pd.notnull(score)]  
+        return np.std(scores)
+
+
+# Função que faz com que itens string dentro de uma lista se fornem integer
+def string_to_int(
+    string_list
+    ):
+    """
+    Função que faz com que itens string dentro de uma lista se fornem integer
+
+    Args:
+        string_list (list): Lista de strings
+
+    Returns:
+        list: Lista de inteiros
+    """
+    return [int(item) for item in string_list]
+
+
+# Função que executa o webscrapping
+def webscrapping(
+    list_categorias: list,
+    tab_webscrapping: st.tabs
+):
+    """
+    Função que executa o webscrapping
+
+    Args:
+        list_categorias (list): Lista de categorias de ativos
+
+    Returns:
+        df_result: DataFrame com dados limpos para criar gráficos
+        dm_ativos: DataFrame com CNPJ de gestoras de fundos de investimento
+        dm_ativos_not_found: Lista de ativos não encontrados
+        list_not_found: Lista de ativos não encontrados
+    """
+    # Abertura de listas vazias e contadores para o Loop
+    dm_ativos = pd.DataFrame()
+    list_name = []
+    list_profitability_12m = []
+    list_volatility_12m = []
+    list_profitability_36m = []
+    list_volatility_36m = []
+    list_profitability_60m = []
+    list_volatility_60m = []
+    list_profitability_begin = []
+    list_volatility_begin = []
+    list_sharpe_ratio_begin = []
+    list_not_found = []
+    count = 0
+
+    # Cria barra de progresso
+    progress_bar = tab_webscrapping.progress(0)
+
+    # Para cada categoria de ativos da SuperCarteira, pega cnpj de gestora de fundos de investimento desta categoria
+    for categoria in list_categorias:
+        dm_ativos = get_cnpj(dm_ativos, f"{input_path}/SuperCarteira_{categoria}.json", categoria).reset_index(drop = True)
+        
+    # Para cada ativo da SuperCarteira, pega rentabilidade e volatividade
+    for ativo in dm_ativos.cnpj:
+
+        # try, se nao funcionar, então guarda mensagem de erro e contagem de erro
+        try:
+
+            # Espera x segundos para não sobrecarregar o servidor
+            time.sleep(SLEEP_SECONDS)
+            count += 1
+            get_string = "/v3/funds/stats/" + str(ativo) + "/details?="
+            # conn.request("GET", "/v3/funds/stats/35940266000107/details?=", payload, headers)
+            conn.request("GET", get_string, payload, headers)
+
+            res = conn.getresponse()
+            data = res.read()
+
+            # Captura informações sobre da gestora
+            company_profile = (pd.read_json(data.decode("utf-8"))
+                    .reset_index()
+                    .rename(columns={"index": "time_period"})
+                    )
+            
+            # Captura nome da empresa
+            name = company_profile["nicename"][0]
+            
+            # Contabiliza progresso
+            print(f"count = {count}/{len(dm_ativos.cnpj)}", end = "\r")
+            progress_bar.empty()
+            progress_bar.progress(value = count / len(dm_ativos.cnpj), text = f"Percentual dos {len(dm_ativos.cnpj)} ativos analisados")
+            
+            # Captura informações sobre produto
+            product_info = (company_profile
+                .copy()
+                .query("time_period == 'timeframe'")
+                    .stats
+                    .values
+                    [0]
+            )
+
+            # Captira as informações de rentabilidade e volatilidade
+            profitability_12m = product_info["last_12_months"]["profitability"]
+            volatility_12m = product_info["last_12_months"]["volatility"]
+            profitability_36m = product_info["last_36_months"]["profitability"]
+            volatility_36m = product_info["last_36_months"]["volatility"]
+            profitability_60m = product_info["last_60_months"]["profitability"]
+            volatility_60m = product_info["last_60_months"]["volatility"]
+            profitability_begin = product_info["begin"]["profitability"]
+            volatility_begin = product_info["begin"]["volatility"]
+            sharpe_ratio_begin = product_info["begin"]["sharpe_ratio"]
+
+            # Coloca informações deste produto na lista
+            list_name.append(name)
+            list_profitability_12m.append(profitability_12m)
+            list_volatility_12m.append(volatility_12m)
+            list_profitability_36m.append(profitability_36m)
+            list_volatility_36m.append(volatility_36m)
+            list_profitability_60m.append(profitability_60m)
+            list_volatility_60m.append(volatility_60m)
+            list_profitability_begin.append(profitability_begin)
+            list_volatility_begin.append(volatility_begin)
+            list_sharpe_ratio_begin.append(sharpe_ratio_begin)
+
+        # Caso não seja possível puxar algum dos ativos
+        except Exception as e:
+
+            # Adicionar o ativo a lista de ativos não encontrados
+            list_not_found.append(ativo)
+
+            print(f"Erro: {e}")
+            print(f"Erro no cnpj: {ativo}")
+            print(f"Erro no count: {count}")
+
+    # Transforma itens da lista de ativos não encontrados em inteiros
+    list_not_found = string_to_int(list_not_found)
+
+    # Cria DataFrame com ativos não encontrados
+    dm_ativos_not_found = dm_ativos.query("cnpj == @list_not_found")
+
+    # Remover o ativo da lista de ativos
+    dm_ativos = dm_ativos.query("cnpj != @list_not_found")
+
+    # Adiciona valores ao resultado
+    df_result = (
+        dm_ativos
+        .copy()
+        .assign(name = list_name)
+        .assign(profitability_12m = list_profitability_12m)
+        .assign(volatility_12m = list_volatility_12m)
+        .assign(profitability_36m = list_profitability_36m)
+        .assign(volatility_36m = list_volatility_36m)
+        .assign(profitability_60m = list_profitability_60m)
+        .assign(volatility_60m = list_volatility_60m)
+        .assign(profitability_begin = list_profitability_begin)
+        .assign(volatility_begin = list_volatility_begin)
+        .assign(sharpe_ratio_begin = list_sharpe_ratio_begin)
+        .drop(columns = "cnpj")
+        .assign(score_12m = lambda _: _.profitability_12m / _.volatility_12m)
+        .assign(score_36m = lambda _: _.profitability_36m / _.volatility_36m)
+        .assign(score_60m = lambda _: _.profitability_60m / _.volatility_60m)
+        .assign(score_begin = lambda _: _.profitability_begin / _.volatility_begin)
+        # .assign(score_mean = lambda _: np.mean([_.score_12m, _.score_36m, _.score_60m, _.score_begin], axis = 0))
+        # .assign(score_std = lambda _: np.std([_.score_12m, _.score_36m, _.score_60m, _.score_begin], axis = 0))
+        .assign(score_mean = lambda _: _.apply(calculate_mean, axis=1))  
+        .assign(score_std = lambda _: _.apply(calculate_std, axis=1))  
+        .assign(score_all = lambda _: _.score_mean / _.score_std)
+        .sort_values(by = "score_all", ascending = False)
+        # .sort_values(by = "score_begin", ascending = False)
+    )
+
+    # Retorna quantos ativos foram encontrados e quantos não foram
+    tab_webscrapping.write(f"Quantidade de ativos encontrados: {len(dm_ativos)}")
+    tab_webscrapping.write(f"Quantidade de ativos não encontrados: {len(dm_ativos_not_found)}")
+
+    # Nomeia quais ativos não foram encontrados
+    tab_webscrapping.write(f"Ativos não encontrados: {list_not_found}")
+
+    return df_result, dm_ativos, dm_ativos_not_found, list_not_found
+
+######## Data Analysis ########
 # Função que prepara os dados para criar os gráficos
 def clean_to_chart(
     df_result: pd.DataFrame,
@@ -113,6 +397,7 @@ def clean_to_chart(
     )
 
     return df_result_chart
+
 
 # Cria gráfico interativo
 def chart_interactive(
@@ -174,7 +459,7 @@ df_template = pd.read_excel("Template_SuperCarteira_Result.xlsx", engine = "open
 
 
 
-# ------------------------------------------------------- 05. COMPONENTES DE FILTROS -------------------------------------------------------
+# -------------------------------------------------------- 05. STREAMLIT COMPONENTS --------------------------------------------------------
 
 
 
@@ -303,8 +588,11 @@ def tab_data_analysis_part1(
     Returns:
         df_result: DataFrame com dados limpos para criar gráficos
     """
+    # Colapsa as funcionalidades de upload e download de arquivos
+    expander_data_analisys = tab_data_analysis.expander(label = "Uploads/Downloads")
+
     # Caso o usuário clique no botão, o arquivo template será baixado
-    tab_data_analysis.download_button(
+    expander_data_analisys.download_button(
         label = "Download Template",
         data = df_template_converted,
         file_name = "Template_SuperCarteira.xlsx",
@@ -312,7 +600,7 @@ def tab_data_analysis_part1(
     )
 
     # Permite usuário dar upload de arquivo com dados no formato para construir os gráficos
-    Upload_Data = tab_data_analysis.file_uploader("Upload Arquivo Excel (no formato do template)", type = ["xlsx"])
+    Upload_Data = expander_data_analisys.file_uploader("Upload Arquivo Excel (no formato do template)", type = ["xlsx"])
 
     if Upload_Data is not None:
 
@@ -389,6 +677,11 @@ def tab_web_scraping(
     tab_webscrapping.write('''
         Aqui você pode fazer webscrapping para obter dados de investimentos
     ''')
+
+    if tab_webscrapping.button("Webscrapping"):
+
+        # Executa o webscrapping
+        df_result, dm_ativos, dm_ativos_not_found, list_not_found = webscrapping(list_categorias, tab_webscrapping)
 
     return None
 
