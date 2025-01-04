@@ -67,6 +67,11 @@ Results_path = "/02. Results/"
 
 
 
+# Define as opções de score que podem ser escolhidas
+SCORE_OPTIONS = ["12m", "36m", "60m", "begin"]
+
+
+
 # -------------------------------------------------------------- 03. FUNCTIONS -------------------------------------------------------------
 
 
@@ -136,7 +141,7 @@ def chart_interactive(
 
 
 # Transformar o DataFrame em um arquivo Excel na memória
-# @st.cache_data
+@st.cache_data
 def convert_df_to_excel(df):
     """
     Função que converte um DataFrame em um arquivo Excel na memória
@@ -163,6 +168,7 @@ def convert_df_to_excel(df):
 # ---------------------------------------------------------- 04. DATA MANIPULATION ---------------------------------------------------------
 
 
+
 # Le arquivo com dados template
 df_template = pd.read_excel("Template_SuperCarteira_Result.xlsx", engine = "openpyxl")
 
@@ -170,105 +176,244 @@ df_template = pd.read_excel("Template_SuperCarteira_Result.xlsx", engine = "open
 
 # ------------------------------------------------------- 05. COMPONENTES DE FILTROS -------------------------------------------------------
 
-# #########
-st.title("Ferramenta de Investimento")
 
-# Cria abas de navegação
-tab_webscrapping, tab_data_analysis = st.tabs(["Webscrapping", "Data_Analysis"])
 
-# Filtros da Tabela
-st.sidebar.header("Configurações")  
+# Função que cria os componentes principais da aplicação
+def main_components():
+    """
+    Função que cria os componentes principais da aplicação
 
-# Define as opções de score que podem ser escolhidas
-SCORE_OPTIONS = ["12m", "36m", "60m", "begin"]
+    Args:
+        None
 
-# Componente de seleção para o usuário escolher SCORE_TYPE
-expander_data = st.sidebar.expander(label = "Filtros dos Dados")
-SCORE_TYPE = expander_data.selectbox(f"Escolha o horizonte dos dados", SCORE_OPTIONS)
+    Returns:
+        tab_webscrapping: Aba de webscrapping
+        tab_data_analysis: Aba de data analysis
+    """
+    # Título da aplicação
+    st.title("Ferramenta de Investimento")
 
-# Config Gráfico
-PROFITABILITY = f"profitability_{SCORE_TYPE}"
-VOLATILITY = f"volatility_{SCORE_TYPE}"
+    # Cria abas de navegação
+    tab_webscrapping, tab_data_analysis = st.tabs(["Webscrapping", "Data_Analysis"])
 
-#########
-# Botão para download
-df_template_converted = convert_df_to_excel(df_template)
+    # Botão para download
+    df_template_converted = convert_df_to_excel(df_template)
 
-# Caso o usuário clique no botão, o arquivo template será baixado
-tab_data_analysis.download_button(
-    label = "Download Template",
-    data = df_template_converted,
-    file_name = "Template_SuperCarteira.xlsx",
-    mime = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-)
+    return tab_webscrapping, tab_data_analysis, df_template_converted
 
-# Permite usuário dar upload de arquivo com dados no formato para construir os gráficos
-Upload_Data = tab_data_analysis.file_uploader("Upload Arquivo Excel (no formato do template)", type = ["xlsx"])
 
-if Upload_Data is not None:
+# Função que cria a primeira parte da sidebar
+def sidebar_part1(
+    SCORE_OPTIONS: list
+):
+    """
+    Função que cria a primeira parte da sidebar
 
-    # Pega valor de bytes do arquivo
-    bytes_data = Upload_Data.getvalue()
+    Args:
+        SCORE_OPTIONS (list): Lista com opções de score
 
-    # Le arquivo excel
-    dataframe = pd.read_excel(BytesIO(bytes_data))  
-    df_result = dataframe
+    Returns:
+        SCORE_TYPE: Tipo de score escolhido pelo usuário
+    """
+    # Filtros da Tabela
+    st.sidebar.header("Configurações")  
 
-# Caso não haja upload, usa dados dos default
-if Upload_Data is None:
+    # Componente de seleção para o usuário escolher SCORE_TYPE
+    expander_data = st.sidebar.expander(label = "Filtros dos Dados")
+    SCORE_TYPE = expander_data.selectbox(f"Escolha o horizonte dos dados", SCORE_OPTIONS)
 
-    # Le arquivo com dados template
-    df_result = pd.read_excel("Template_SuperCarteira_Result.xlsx", engine = "openpyxl")
+    # Config Gráfico
+    PROFITABILITY = f"profitability_{SCORE_TYPE}"
+    VOLATILITY = f"volatility_{SCORE_TYPE}"
 
-#########
-# Filtros do gráfico
-expander_chart = st.sidebar.expander(label = "Filtros do Gráfico")
-expander_chart.write('''
-    Modifique o gráfico de acordo com suas preferências
-''')
+    return PROFITABILITY, VOLATILITY, SCORE_TYPE
 
-# Sidebar checkboxes para sugestões de filtros do gráfico
-USE_SUGESTION = expander_chart.checkbox(
-    "Usar Sugestões de Eixos", 
-    value = False, 
-    help = "Ao clicar no botão 'Aceitar sugestões', você aceita os valores sugeridos para os filtros"
+
+# Função que cria a segunda parte da sidebar
+def sidebar_part2(
+    df_result: pd.DataFrame,
+):
+    """
+    Função que cria a segunda parte da sidebar
+
+    Args:
+        df_result (pd.DataFrame): DataFrame com dados limpos para criar gráficos
+
+    Returns:
+        MAX_PROFITABILITY: Máxima rentabilidade
+        MAX_VOLATILITY: Máxima volatilidade
+        MIN_PROFITABILITY: Mínima rentabilidade
+        MIN_VOLATILITY: Mínima volatilidade
+    """
+    # Filtros do gráfico
+    expander_chart = st.sidebar.expander(label = "Filtros do Gráfico")
+    expander_chart.write('''
+        Modifique o gráfico de acordo com suas preferências
+    ''')
+
+    # Sidebar checkboxes para sugestões de filtros do gráfico
+    USE_SUGESTION = expander_chart.checkbox(
+        "Usar Sugestões de Eixos", 
+        value = False, 
+        help = "Ao clicar no botão 'Aceitar sugestões', você aceita os valores sugeridos para os filtros"
+        )
+
+    # Caso o usuário queira usar sugestões de filtros
+    if USE_SUGESTION == True:
+
+        # Cria sugestões de valores para os limites de filtro
+        min_profitability = 0
+        max_profitability = 999999
+        min_volatility = 0
+        max_volatility = 100
+
+    # Caso o usuário não queira usar sugestões de filtros
+    else:
+
+        # Cria deafult values para os limites de filtro
+        min_profitability = df_result[PROFITABILITY].min()
+        max_profitability = df_result[PROFITABILITY].max()
+        min_volatility = df_result[VOLATILITY].min()
+        max_volatility = df_result[VOLATILITY].max()
+
+    # Recebe valores que definem os limites de filtro
+    MIN_PROFITABILITY, MAX_PROFITABILITY = expander_chart.slider(
+        "Profitability", value = (min_profitability, max_profitability)
+        )
+
+    MIN_VOLATILITY, MAX_VOLATILITY = expander_chart.slider(
+        "Volatility", value = (min_volatility, max_volatility)
+        )
+
+    return MAX_PROFITABILITY, MAX_VOLATILITY, MIN_PROFITABILITY, MIN_VOLATILITY
+
+
+# Função que cria a primeira parte da aba de data analysis
+def tab_data_analysis_part1(
+    tab_data_analysis: st.tabs,
+    df_template_converted: pd.DataFrame
+):
+    """
+    Função que cria a primeira parte da aba de data analysis
+
+    Args:
+        tab_data_analysis (st.tabs): Aba de data analysis
+        df_template_converted (pd.DataFrame): DataFrame com dados convertidos
+
+    Returns:
+        df_result: DataFrame com dados limpos para criar gráficos
+    """
+    # Caso o usuário clique no botão, o arquivo template será baixado
+    tab_data_analysis.download_button(
+        label = "Download Template",
+        data = df_template_converted,
+        file_name = "Template_SuperCarteira.xlsx",
+        mime = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     )
 
-# Caso o usuário queira usar sugestões de filtros
-if USE_SUGESTION == True:
+    # Permite usuário dar upload de arquivo com dados no formato para construir os gráficos
+    Upload_Data = tab_data_analysis.file_uploader("Upload Arquivo Excel (no formato do template)", type = ["xlsx"])
 
-    # Cria sugestões de valores para os limites de filtro
-    min_profitability = 0
-    max_profitability = 999999
-    min_volatility = 0
-    max_volatility = 100
+    if Upload_Data is not None:
 
-# Caso o usuário não queira usar sugestões de filtros
-else:
+        # Pega valor de bytes do arquivo
+        bytes_data = Upload_Data.getvalue()
 
-    # Cria deafult values para os limites de filtro
-    min_profitability = df_result[PROFITABILITY].min()
-    max_profitability = df_result[PROFITABILITY].max()
-    min_volatility = df_result[VOLATILITY].min()
-    max_volatility = df_result[VOLATILITY].max()
+        # Le arquivo excel
+        dataframe = pd.read_excel(BytesIO(bytes_data))  
+        df_result = dataframe
 
-# Recebe valores que definem os limites de filtro
-MIN_PROFITABILITY, MAX_PROFITABILITY = expander_chart.slider(
-    "Profitability", value = (min_profitability, max_profitability)
-    )
+    # Caso não haja upload, usa dados dos default
+    if Upload_Data is None:
 
-MIN_VOLATILITY, MAX_VOLATILITY = expander_chart.slider(
-    "Volatility", value = (min_volatility, max_volatility)
-    )
+        # Le arquivo com dados template
+        df_result = pd.read_excel("Template_SuperCarteira_Result.xlsx", engine = "openpyxl")
 
-# Prepara os dados para criar os gráficos
-df_result_chart = clean_to_chart(df_result, SCORE_TYPE, MAX_PROFITABILITY, MAX_VOLATILITY, MIN_PROFITABILITY, MIN_VOLATILITY)
+    return df_result
 
-# Cria gráfico interativo
-fig = chart_interactive(df_result_chart)
 
-# Exibir o gráfico Plotly no aplicativo Streamlit
-tab_data_analysis.plotly_chart(fig, use_container_width=True)
+# Função que cria a segunda parte da aba de data analysis
+def tab_data_analysis_part2(
+    tab_data_analysis: st.tabs,
+    df_result: pd.DataFrame,
+    SCORE_TYPE: str,
+    MAX_PROFITABILITY: float,
+    MAX_VOLATILITY: float,
+    MIN_PROFITABILITY: float,
+    MIN_VOLATILITY: float
+):
+    """
+    Função que cria a segunda parte da aba de data analysis
 
-# Converter o gráfico Plotly em HTML
-html_str = pio.to_html(fig, full_html=False)
+    Args:
+        tab_data_analysis (st.tabs): Aba de data analysis
+        df_result (pd.DataFrame): DataFrame com dados limpos para criar gráficos
+        SCORE_TYPE (str): Tipo de score escolhido pelo usuário
+        MAX_PROFITABILITY (float): Máxima rentabilidade
+        MAX_VOLATILITY (float): Máxima volatilidade
+        MIN_PROFITABILITY (float): Mínima rentabilidade
+        MIN_VOLATILITY (float): Mínima volatilidade
+
+    Returns:
+        None
+    """
+    # Prepara os dados para criar os gráficos
+    df_result_chart = clean_to_chart(df_result, SCORE_TYPE, MAX_PROFITABILITY, MAX_VOLATILITY, MIN_PROFITABILITY, MIN_VOLATILITY)
+
+    # Cria gráfico interativo
+    fig = chart_interactive(df_result_chart)
+
+    # Exibir o gráfico Plotly no aplicativo Streamlit
+    tab_data_analysis.plotly_chart(fig, use_container_width=True)
+
+    # Converter o gráfico Plotly em HTML
+    html_str = pio.to_html(fig, full_html=False)
+
+    return None
+
+
+# Função que cria a aba de webscrapping
+def tab_web_scraping(
+    tab_webscrapping: st.tabs
+):
+    """
+    Função que cria a aba de webscrapping
+
+    Args:
+        tab_webscrapping (st.tabs): Aba de webscrapping
+
+    Returns:
+        None
+    """
+    # Cria a aba de webscrapping
+    tab_webscrapping.write('''
+        Aqui você pode fazer webscrapping para obter dados de investimentos
+    ''')
+
+    return None
+
+
+
+# --------------------------------------------------------- 06. STREAMLIT PIPELINE ---------------------------------------------------------
+
+
+
+# Cria os componentes principais da aplicação
+tab_webscrapping, tab_data_analysis, df_template_converted = main_components()
+
+# Cria a aba de webscrapping
+tab_web_scraping(tab_webscrapping)
+
+# Cria a primeira parte da sidebar
+PROFITABILITY, VOLATILITY, SCORE_TYPE = sidebar_part1(SCORE_OPTIONS)
+
+# Cria a aba de data analysis
+df_result = tab_data_analysis_part1(tab_data_analysis, df_template_converted)
+
+# Cria a segunda parte da sidebar
+MAX_PROFITABILITY, MAX_VOLATILITY, MIN_PROFITABILITY, MIN_VOLATILITY = sidebar_part2(df_result)
+
+# Cria a segunda parte da aba de data analysis
+tab_data_analysis_part2(tab_data_analysis, df_result, SCORE_TYPE, MAX_PROFITABILITY, MAX_VOLATILITY, MIN_PROFITABILITY, MIN_VOLATILITY)
+
+
