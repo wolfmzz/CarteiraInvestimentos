@@ -1,17 +1,8 @@
-astropy==5.1
-bcrypt==3.2.0
-bitarray==2.5.1
-bkcharts==0.2
-boto3==1.24.28
-bottleneck==1.3.5
-brotlipy==0.7.0
-chardet==4.0.0
 colorama==0.4.5
 conda-token==0.4.0
 cython==0.29.32
 cytoolz==0.12.0
 datashader==0.14.1
-dfply==0.3.3
 distributed==2022.7.0
 flask==2.1.3
 flatten-json==0.1.13
