@@ -1,0 +1,180 @@
+{
+  "ANTIFRAGILIDADE": [
+    {
+      "identifier": "ID_FUNDO_91516058",
+      "label": "BRADESCO ÁGORA FIC CAMBIAL",
+      "cnpj": "28.516.058/0001-01",
+      "situation": "Em funcionamento normal",
+      "managementCompany": "Banco Bradesco",
+      "isin": "BRAFC7CTF000",
+      "type": null,
+      "stockExchange": null,
+      "assetType": "FI"
+    },
+    {
+      "identifier": "ID_FUNDO_9900000000005872",
+      "label": "BTG PACTUAL DIGITAL DÓLAR FI CAMBIAL",
+      "cnpj": "33.144.687/0001-98",
+      "situation": "Em funcionamento normal",
+      "managementCompany": "BTG Pactual Asset Management",
+      "isin": "BR04GQCTF005",
+      "type": null,
+      "stockExchange": null,
+      "assetType": "FI"
+    },
+    {
+      "identifier": "ID_FUNDO_9900000000006278",
+      "label": "BTG PACTUAL REFERENCE OURO FI MULTIMERCADO",
+      "cnpj": "33.600.729/0001-58",
+      "situation": "Em funcionamento normal",
+      "managementCompany": "BTG Pactual Asset Management",
+      "isin": "BR04GRCTF003",
+      "type": null,
+      "stockExchange": null,
+      "assetType": "FI"
+    },
+    {
+      "identifier": "ID_FUNDO_9900000000010334",
+      "label": "BTG PACTUAL REFERENCE OURO FIC MULTIMERCADO",
+      "cnpj": "36.498.594/0001-50",
+      "situation": "Em funcionamento normal",
+      "managementCompany": "BTG Pactual Asset Management",
+      "isin": "BR06AXCTF009",
+      "type": null,
+      "stockExchange": null,
+      "assetType": "FI"
+    },
+    {
+      "identifier": "ID_FUNDO_9900000000010327",
+      "label": "BTG PACTUAL REFERENCE OURO USD FIC MULTIMERCADO",
+      "cnpj": "36.727.910/0001-18",
+      "situation": "Em funcionamento normal",
+      "managementCompany": "BTG Pactual Asset Management",
+      "isin": "BR06AYCTF007",
+      "type": null,
+      "stockExchange": null,
+      "assetType": "FI"
+    },
+    {
+      "identifier": "ID_FUNDO_9900000000008180",
+      "label": "BTG PACTUAL REFERENCE OURO USD RESP LIMITADA FI MULTIMERCADO",
+      "cnpj": "34.979.818/0001-10",
+      "situation": "Em funcionamento normal",
+      "managementCompany": "BTG Pactual Asset Management",
+      "isin": "BR04GSCTF001",
+      "type": null,
+      "stockExchange": null,
+      "assetType": "FI"
+    },
+    {
+      "identifier": "ID_FUNDO_9900000000007005",
+      "label": "EMPIRICUS DÓLAR FIF CAMBIAL",
+      "cnpj": "33.952.939/0001-05",
+      "situation": "Em funcionamento normal",
+      "managementCompany": "Empiricus Investimentos",
+      "isin": "BR02G0CTF008",
+      "type": null,
+      "stockExchange": null,
+      "assetType": "FI"
+    },
+    {
+      "identifier": "ID_FUNDO_9900000000010580",
+      "label": "ITAÚ GOLD DISTRIBUIDORES FIC MULTIMERCADO",
+      "cnpj": "36.966.636/0001-30",
+      "situation": "Em funcionamento normal",
+      "managementCompany": "Itaú Asset Management",
+      "isin": "BR04F4CTF009",
+      "type": null,
+      "stockExchange": null,
+      "assetType": "FI"
+    },
+    {
+      "identifier": "ID_FUNDO_9900000000010998",
+      "label": "ITAÚ INDEX DÓLAR FIC CAMBIAL",
+      "cnpj": "37.306.612/0001-17",
+      "situation": "Em funcionamento normal",
+      "managementCompany": "Itaú Asset Management",
+      "isin": "BR04MMCTF002",
+      "type": null,
+      "stockExchange": null,
+      "assetType": "FI"
+    },
+    {
+      "identifier": "ID_FUNDO_9900000000008505",
+      "label": "ITAÚ INDEX GOLD FIC MULTIMERCADO",
+      "cnpj": "35.492.154/0001-22",
+      "situation": "Em funcionamento normal",
+      "managementCompany": "Itaú Asset Management",
+      "isin": "BR03BOCTF003",
+      "type": null,
+      "stockExchange": null,
+      "assetType": "FI"
+    },
+    {
+      "identifier": "ID_FUNDO_9900000000011457",
+      "label": "ITAÚ INDEX GOLD USD INVESTIMENTO NO EXTERIOR FIC MULTIMERCADO",
+      "cnpj": "37.555.088/0001-18",
+      "situation": "Em funcionamento normal",
+      "managementCompany": "Itaú Asset Management",
+      "isin": "BR04W0CTF006",
+      "type": null,
+      "stockExchange": null,
+      "assetType": "FI"
+    },
+    {
+      "identifier": "ID_FUNDO_367044",
+      "label": "MAPFRE FI CAMBIAL",
+      "cnpj": "20.077.065/0001-42",
+      "situation": "Em funcionamento normal",
+      "managementCompany": "MAPFRE Investimentos",
+      "isin": "BRMAC9CTF007",
+      "type": null,
+      "stockExchange": null,
+      "assetType": "FI"
+    },
+    {
+      "identifier": "ID_FUNDO_230553",
+      "label": "SANTANDER VIP RESP LIMITADA FIF CAMBIAL",
+      "cnpj": "10.362.043/0001-70",
+      "situation": "Em funcionamento normal",
+      "managementCompany": "Santander Brasil Asset Management",
+      "isin": "BRCMB2CTF001",
+      "type": null,
+      "stockExchange": null,
+      "assetType": "FI"
+    },
+    {
+      "identifier": "ID_FUNDO_9900000000003637",
+      "label": "TREND DÓLAR RESP LIMITADA FIF CAMBIAL",
+      "cnpj": "31.132.386/0001-19",
+      "situation": "Em funcionamento normal",
+      "managementCompany": "XP Asset Management",
+      "isin": "BR00BCCTF004",
+      "type": null,
+      "stockExchange": null,
+      "assetType": "FI"
+    },
+    {
+      "identifier": "ID_FUNDO_9900000000008717",
+      "label": "TREND OURO DÓLAR RESP LIMITADA FIF MULTIMERCADO",
+      "cnpj": "35.609.786/0001-23",
+      "situation": "Em funcionamento normal",
+      "managementCompany": "XP Asset Management",
+      "isin": "BR03JCCTF001",
+      "type": null,
+      "stockExchange": null,
+      "assetType": "FI"
+    },
+    {
+      "identifier": "ID_FUNDO_413933",
+      "label": "TREND OURO FI MULTIMERCADO",
+      "cnpj": "22.963.439/0001-52",
+      "situation": "Em funcionamento normal",
+      "managementCompany": "XP Asset Management",
+      "isin": "BRXPG8CTF005",
+      "type": null,
+      "stockExchange": null,
+      "assetType": "FI"
+    }
+  ]
+}

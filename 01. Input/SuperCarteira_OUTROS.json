@@ -1,0 +1,114 @@
+{
+  "OUTROS": [
+    {
+      "identifier": "ID_FUNDO_9900000000014046",
+      "label": "+P INVESTIMENTO NO EXTERIOR FIC MULTIMERCADO CRÉDITO PRIVADO",
+      "cnpj": "39.959.611/0001-05",
+      "situation": "Em funcionamento normal",
+      "managementCompany": "ANDBANK",
+      "isin": "BR076LCTF004",
+      "type": null,
+      "stockExchange": null,
+      "assetType": "FI"
+    },
+    {
+      "identifier": "ID_FUNDO_9900000000032362",
+      "label": "01 CD FIC MULTIMERCADO PREVIDENCIÁRIO CRÉDITO PRIVADO",
+      "cnpj": "46.205.770/0001-71",
+      "situation": "Em funcionamento normal",
+      "managementCompany": "EFPC VIVEST",
+      "isin": "BR0CXKCTF002",
+      "type": null,
+      "stockExchange": null,
+      "assetType": "FI"
+    },
+    {
+      "identifier": "ID_FUNDO_155365",
+      "label": "01 FIC MULTIMERCADO PREVIDENCIÁRIO CRÉDITO PRIVADO",
+      "cnpj": "04.912.456/0001-89",
+      "situation": "Em funcionamento normal",
+      "managementCompany": "EFPC VIVEST",
+      "isin": "BRMT01CTF003",
+      "type": null,
+      "stockExchange": null,
+      "assetType": "FI"
+    },
+    {
+      "identifier": "ID_FUNDO_154873",
+      "label": "02 FIC MULTIMERCADO PREVIDENCIÁRIO CRÉDITO PRIVADO",
+      "cnpj": "04.912.431/0001-85",
+      "situation": "Em funcionamento normal",
+      "managementCompany": "EFPC VIVEST",
+      "isin": "BRMT02CTF001",
+      "type": null,
+      "stockExchange": null,
+      "assetType": "FI"
+    },
+    {
+      "identifier": "ID_FUNDO_154911",
+      "label": "03 FIC MULTIMERCADO PREVIDENCIÁRIO CRÉDITO PRIVADO",
+      "cnpj": "05.754.033/0001-40",
+      "situation": "Em funcionamento normal",
+      "managementCompany": "EFPC VIVEST",
+      "isin": "BRMT03CTF009",
+      "type": null,
+      "stockExchange": null,
+      "assetType": "FI"
+    },
+    {
+      "identifier": "ID_FUNDO_9900000000032296",
+      "label": "04 CRÉDITO FIC MULTIMERCADO PREVIDENCIÁRIO",
+      "cnpj": "46.205.698/0001-82",
+      "situation": "Em funcionamento normal",
+      "managementCompany": "EFPC VIVEST",
+      "isin": "BR0CWJCTF006",
+      "type": null,
+      "stockExchange": null,
+      "assetType": "FI"
+    },
+    {
+      "identifier": "ID_FUNDO_169773",
+      "label": "04 FIC MULTIMERCADO PREVIDENCIÁRIO CRÉDITO PRIVADO",
+      "cnpj": "04.087.244/0001-04",
+      "situation": "Em funcionamento normal",
+      "managementCompany": "EFPC VIVEST",
+      "isin": "BRPAUBCTF002",
+      "type": null,
+      "stockExchange": null,
+      "assetType": "FI"
+    },
+    {
+      "identifier": "ID_FUNDO_9900000000028176",
+      "label": "051 ANGA CRÉDITO ESTRUTURADO FIF CIC MULTIMERCADO",
+      "cnpj": "44.613.679/0001-60",
+      "situation": "Em funcionamento normal",
+      "managementCompany": "051 Capital",
+      "isin": "BR0BGWCTF004",
+      "type": null,
+      "stockExchange": null,
+      "assetType": "FI"
+    },
+    {
+      "identifier": "ID_FUNDO_9900000000004366",
+      "label": "051 AUDAX RESP LIMITADA FIF MULTIMERCADO CRÉDITO PRIVADO",
+      "cnpj": "31.341.367/0001-00",
+      "situation": "Em funcionamento normal",
+      "managementCompany": "051 Capital",
+      "isin": "BR00PKCTF007",
+      "type": null,
+      "stockExchange": null,
+      "assetType": "FI"
+    },
+    {
+      "identifier": "ID_FUNDO_9900000000031956",
+      "label": "051 AURORA BOREAL INVESTIMENTO NO EXTERIOR FI MULTIMERCADO CRÉDITO PRIVADO",
+      "cnpj": "46.082.374/0001-02",
+      "situation": "Em funcionamento normal",
+      "managementCompany": "051 Capital",
+      "isin": "BR0L88CTF009",
+      "type": null,
+      "stockExchange": null,
+      "assetType": "FI"
+    }
+  ]
+}

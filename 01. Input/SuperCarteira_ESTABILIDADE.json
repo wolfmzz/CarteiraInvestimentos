@@ -1,0 +1,246 @@
+{
+  "ESTABILIDADE": [
+    {
+      "identifier": "ID_FUNDO_9900000000007843",
+      "label": "AUGME 180 FIC MULTIMERCADO CRÉDITO PRIVADO",
+      "cnpj": "34.218.678/0001-67",
+      "situation": "Em funcionamento normal",
+      "managementCompany": "Augme Capital",
+      "isin": "BR02WGCTF007",
+      "type": null,
+      "stockExchange": null,
+      "assetType": "FI"
+    },
+    {
+      "identifier": "ID_FUNDO_9900000000005668",
+      "label": "AUGME 45 ADVISORY FIC RENDA FIXA CRÉDITO PRIVADO LP",
+      "cnpj": "30.568.495/0001-10",
+      "situation": "Em funcionamento normal",
+      "managementCompany": "Augme Capital",
+      "isin": "BR01HKCTF002",
+      "type": null,
+      "stockExchange": null,
+      "assetType": "FI"
+    },
+    {
+      "identifier": "ID_FUNDO_291781",
+      "label": "AUGME 45 FIC RENDA FIXA CRÉDITO PRIVADO LP",
+      "cnpj": "14.237.118/0001-42",
+      "situation": "Em funcionamento normal",
+      "managementCompany": "Augme Capital",
+      "isin": "BRCSC7CTF003",
+      "type": null,
+      "stockExchange": null,
+      "assetType": "FI"
+    },
+    {
+      "identifier": "ID_FUNDO_9900000000111220",
+      "label": "AUGME 45 II FIC RENDA FIXA CRÉDITO PRIVADO LP",
+      "cnpj": "52.285.852/0001-76",
+      "situation": "Em funcionamento normal",
+      "managementCompany": "Augme Capital",
+      "isin": "BR0GXPCTF002",
+      "type": null,
+      "stockExchange": null,
+      "assetType": "FI"
+    },
+    {
+      "identifier": "ID_FUNDO_9900000000125085",
+      "label": "AUGME XP SEGUROS PREV RESP LIMITADA FIF CIC MULTIMERCADO CRÉDITO PRIVADO",
+      "cnpj": "53.482.542/0001-04",
+      "situation": "Em funcionamento normal",
+      "managementCompany": "Augme Capital",
+      "isin": "BR0I64CTF006",
+      "type": null,
+      "stockExchange": null,
+      "assetType": "FI"
+    },
+    {
+      "identifier": "ID_FUNDO_441104",
+      "label": "CAPITÂNIA CREDPREVIDÊNCIA ICATU FIC RENDA FIXA CRÉDITO PRIVADO",
+      "cnpj": "27.239.065/0001-40",
+      "situation": "Em funcionamento normal",
+      "managementCompany": "Capitânia Investimentos",
+      "isin": "BRCMI3CTF002",
+      "type": null,
+      "stockExchange": null,
+      "assetType": "FI"
+    },
+    {
+      "identifier": "ID_FUNDO_381934",
+      "label": "CAPITÂNIA PREMIUM 45 FIC RENDA FIXA CRÉDITO PRIVADO LP",
+      "cnpj": "20.146.294/0001-71",
+      "situation": "Em funcionamento normal",
+      "managementCompany": "Capitânia Investimentos",
+      "isin": "BRCTP8CTF005",
+      "type": null,
+      "stockExchange": null,
+      "assetType": "FI"
+    },
+    {
+      "identifier": "ID_FUNDO_9900000000005405",
+      "label": "CAPITÂNIA PREV ADVISORY XP SEGUROS RESP LIMITADA FIC RENDA FIXA CRÉDITO PRIVADO",
+      "cnpj": "32.319.658/0001-57",
+      "situation": "Em funcionamento normal",
+      "managementCompany": "XP Vida e Previdência",
+      "isin": "BR0ETOCTF008",
+      "type": null,
+      "stockExchange": null,
+      "assetType": "FI"
+    },
+    {
+      "identifier": "ID_FUNDO_9900000000007066",
+      "label": "CAPITÂNIA PREV BP FI RENDA FIXA CRÉDITO PRIVADO",
+      "cnpj": "34.270.943/0001-56",
+      "situation": "Em funcionamento normal",
+      "managementCompany": "Capitânia Investimentos",
+      "isin": "BR0B49CTF002",
+      "type": null,
+      "stockExchange": null,
+      "assetType": "FI"
+    },
+    {
+      "identifier": "ID_FUNDO_9900000000030520",
+      "label": "CAPITÂNIA PREV ITAÚ FIE FIC MULTIMERCADO CRÉDITO PRIVADO",
+      "cnpj": "41.709.507/0001-04",
+      "situation": "Em funcionamento normal",
+      "managementCompany": "Capitânia Investimentos",
+      "isin": "BR0C26CTF008",
+      "type": null,
+      "stockExchange": null,
+      "assetType": "FI"
+    },
+    {
+      "identifier": "ID_FUNDO_410942",
+      "label": "CAPITÂNIA RADAR 90 FIC MULTIMERCADO CRÉDITO PRIVADO LP",
+      "cnpj": "23.272.391/0001-07",
+      "situation": "Em funcionamento normal",
+      "managementCompany": "Capitânia Investimentos",
+      "isin": "BRMGI2CTF000",
+      "type": null,
+      "stockExchange": null,
+      "assetType": "FI"
+    },
+    {
+      "identifier": "ID_FUNDO_418870",
+      "label": "JGP CORPORATE FEEDER III FIC RENDA FIXA CRÉDITO PRIVADO LP",
+      "cnpj": "23.956.069/0001-99",
+      "situation": "Em funcionamento normal",
+      "managementCompany": "JGP",
+      "isin": "BRJGC1CTF003",
+      "type": null,
+      "stockExchange": null,
+      "assetType": "FI"
+    },
+    {
+      "identifier": "ID_FUNDO_391573",
+      "label": "JGP CORPORATE FIC RENDA FIXA CRÉDITO PRIVADO LP",
+      "cnpj": "20.824.446/0001-48",
+      "situation": "Em funcionamento normal",
+      "managementCompany": "JGP",
+      "isin": "BRJCM3CTF001",
+      "type": null,
+      "stockExchange": null,
+      "assetType": "FI"
+    },
+    {
+      "identifier": "ID_FUNDO_9900000000005343",
+      "label": "JGP CRÉDITO ADVISORY XP SEGUROS FIC RENDA FIXA PREVIDENCIÁRIO CRÉDITO PRIVADO LP",
+      "cnpj": "32.319.225/0001-00",
+      "situation": "Em funcionamento normal",
+      "managementCompany": "JGP",
+      "isin": "BR01E0CTF001",
+      "type": null,
+      "stockExchange": null,
+      "assetType": "FI"
+    },
+    {
+      "identifier": "ID_FUNDO_9900000000030578",
+      "label": "JGP CRÉDITO ECOSSISTEMA 360 ADVISORY FIC MULTIMERCADO CRÉDITO PRIVADO",
+      "cnpj": "45.683.300/0001-50",
+      "situation": "Em funcionamento normal",
+      "managementCompany": "JGP",
+      "isin": "BR0C34CTF002",
+      "type": null,
+      "stockExchange": null,
+      "assetType": "FI"
+    },
+    {
+      "identifier": "ID_FUNDO_9900000000027348",
+      "label": "JGP CRÉDITO ITAÚ FIC RENDA FIXA PREVIDENCIÁRIO CRÉDITO PRIVADO",
+      "cnpj": "41.955.494/0001-45",
+      "situation": "Em funcionamento normal",
+      "managementCompany": "JGP",
+      "isin": "BR0AO6CTF009",
+      "type": null,
+      "stockExchange": null,
+      "assetType": "FI"
+    },
+    {
+      "identifier": "ID_FUNDO_9900000000023147",
+      "label": "JGP CRÉDITO TIPO 1 ICATU FIC RENDA FIXA PREVIDENCIÁRIO CRÉDITO PRIVADO LP",
+      "cnpj": "41.128.345/0001-02",
+      "situation": "Em funcionamento normal",
+      "managementCompany": "JGP",
+      "isin": "BR09CHCTF002",
+      "type": null,
+      "stockExchange": null,
+      "assetType": "FI"
+    },
+    {
+      "identifier": "ID_FUNDO_9900000000028037",
+      "label": "MANAGER SPX SEAHAWK FIC RENDA FIXA CRÉDITO PRIVADO LP",
+      "cnpj": "43.759.209/0001-46",
+      "situation": "Em funcionamento normal",
+      "managementCompany": "Safra Asset Management",
+      "isin": "BR0BGPCTF008",
+      "type": null,
+      "stockExchange": null,
+      "assetType": "FI"
+    },
+    {
+      "identifier": "ID_FUNDO_9900000000008719",
+      "label": "SPX SEAHAWK ACCESS FIC RENDA FIXA CRÉDITO PRIVADO LP",
+      "cnpj": "35.343.590/0001-30",
+      "situation": "Em funcionamento normal",
+      "managementCompany": "BTG Pactual WM Gestão de Recursos",
+      "isin": "BR05E3CTF001",
+      "type": null,
+      "stockExchange": null,
+      "assetType": "FI"
+    },
+    {
+      "identifier": "ID_FUNDO_9900000000008870",
+      "label": "SPX SEAHAWK ADVISORY FIC RENDA FIXA CRÉDITO PRIVADO LP",
+      "cnpj": "35.648.999/0001-64",
+      "situation": "Em funcionamento normal",
+      "managementCompany": "SPX Capital",
+      "isin": "BR03IFCTF006",
+      "type": null,
+      "stockExchange": null,
+      "assetType": "FI"
+    },
+    {
+      "identifier": "ID_FUNDO_9900000000008629",
+      "label": "SPX SEAHAWK FIC RENDA FIXA CRÉDITO PRIVADO LP",
+      "cnpj": "35.505.971/0001-78",
+      "situation": "Em funcionamento normal",
+      "managementCompany": "SPX Capital",
+      "isin": "BR03DNCTF001",
+      "type": null,
+      "stockExchange": null,
+      "assetType": "FI"
+    },
+    {
+      "identifier": "ID_FUNDO_9900000000023086",
+      "label": "SPX SEAHAWK SELEÇÃO FIC RENDA FIXA CRÉDITO PRIVADO LP",
+      "cnpj": "42.431.531/0001-89",
+      "situation": "Em funcionamento normal",
+      "managementCompany": "Itaú DTVM",
+      "isin": "BR097KCTF002",
+      "type": null,
+      "stockExchange": null,
+      "assetType": "FI"
+    }
+  ]
+}
