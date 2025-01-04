@@ -171,14 +171,20 @@ df_template = pd.read_excel("Template_SuperCarteira_Result.xlsx", engine = "open
 # ------------------------------------------------------- 05. COMPONENTES DE FILTROS -------------------------------------------------------
 
 # #########
-# # Filtros da Tabela
-st.sidebar.header("Filtros")  
+st.title("Ferramenta de Investimento")
+
+# Cria abas de navegação
+tab_webscrapping, tab_data_analysis = st.tabs(["Webscrapping", "Data_Analysis"])
+
+# Filtros da Tabela
+st.sidebar.header("Configurações")  
 
 # Define as opções de score que podem ser escolhidas
 SCORE_OPTIONS = ["12m", "36m", "60m", "begin"]
 
 # Componente de seleção para o usuário escolher SCORE_TYPE
-SCORE_TYPE = st.sidebar.selectbox(f"Escolha o horizonte dos dados", SCORE_OPTIONS)
+expander_data = st.sidebar.expander(label = "Filtros dos Dados")
+SCORE_TYPE = expander_data.selectbox(f"Escolha o horizonte dos dados", SCORE_OPTIONS)
 
 # Config Gráfico
 PROFITABILITY = f"profitability_{SCORE_TYPE}"
@@ -189,7 +195,7 @@ VOLATILITY = f"volatility_{SCORE_TYPE}"
 df_template_converted = convert_df_to_excel(df_template)
 
 # Caso o usuário clique no botão, o arquivo template será baixado
-st.download_button(
+tab_data_analysis.download_button(
     label = "Download Template",
     data = df_template_converted,
     file_name = "Template_SuperCarteira.xlsx",
@@ -197,7 +203,7 @@ st.download_button(
 )
 
 # Permite usuário dar upload de arquivo com dados no formato para construir os gráficos
-Upload_Data = st.file_uploader("Upload Arquivo Excel (no formato do template)", type = ["xlsx"])
+Upload_Data = tab_data_analysis.file_uploader("Upload Arquivo Excel (no formato do template)", type = ["xlsx"])
 
 if Upload_Data is not None:
 
@@ -216,25 +222,17 @@ if Upload_Data is None:
 
 #########
 # Filtros do gráfico
-st.sidebar.header("Filtros do Gráfico")  
-
-# Cria aviso ao usuário  
-st.sidebar.markdown("""    
-<style>    
-.small-header {    
-    font-size: 14px;    
-    font-weight: bold;    
-}    
-</style>    
-<div class="small-header">  
-    Ao clicar no botão "Aceitar sugestões", você aceita os valores sugeridos para os filtros
-    <br>  
-    <p> </p>  
-</div>    
-""", unsafe_allow_html=True)  
+expander_chart = st.sidebar.expander(label = "Filtros do Gráfico")
+expander_chart.write('''
+    Modifique o gráfico de acordo com suas preferências
+''')
 
 # Sidebar checkboxes para sugestões de filtros do gráfico
-USE_SUGESTION = st.sidebar.checkbox("Usar Sugestões de Filtros" , value = False)
+USE_SUGESTION = expander_chart.checkbox(
+    "Usar Sugestões de Eixos", 
+    value = False, 
+    help = "Ao clicar no botão 'Aceitar sugestões', você aceita os valores sugeridos para os filtros"
+    )
 
 # Caso o usuário queira usar sugestões de filtros
 if USE_SUGESTION == True:
@@ -255,11 +253,11 @@ else:
     max_volatility = df_result[VOLATILITY].max()
 
 # Recebe valores que definem os limites de filtro
-MIN_PROFITABILITY, MAX_PROFITABILITY = st.sidebar.slider(
+MIN_PROFITABILITY, MAX_PROFITABILITY = expander_chart.slider(
     "Profitability", value = (min_profitability, max_profitability)
     )
 
-MIN_VOLATILITY, MAX_VOLATILITY = st.sidebar.slider(
+MIN_VOLATILITY, MAX_VOLATILITY = expander_chart.slider(
     "Volatility", value = (min_volatility, max_volatility)
     )
 
@@ -270,7 +268,7 @@ df_result_chart = clean_to_chart(df_result, SCORE_TYPE, MAX_PROFITABILITY, MAX_V
 fig = chart_interactive(df_result_chart)
 
 # Exibir o gráfico Plotly no aplicativo Streamlit
-st.plotly_chart(fig, use_container_width=True)
+tab_data_analysis.plotly_chart(fig, use_container_width=True)
 
 # Converter o gráfico Plotly em HTML
 html_str = pio.to_html(fig, full_html=False)
