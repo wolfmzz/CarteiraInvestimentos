@@ -3,6 +3,7 @@ colorama==0.4.5
 flatten-json==0.1.13
 
 openpyxl==3.0.10
+plotly==5.9.0
 
 scrapy==2.6.2
 seaborn==0.12.0
