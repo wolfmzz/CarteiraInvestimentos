@@ -233,7 +233,7 @@ def webscrapping(
     list_not_found = []
     count = 0
 
-    # Cria barra de progresso
+    # Cria barra de progresso e percentual do progresso do webscrapping
     progress_bar = tab_webscrapping.progress(0)
 
     # Para cada categoria de ativos da SuperCarteira, pega cnpj de gestora de fundos de investimento desta categoria
@@ -265,7 +265,7 @@ def webscrapping(
             # Captura nome da empresa
             name = company_profile["nicename"][0]
             
-            # Contabiliza progresso
+            # Contabiliza progresso em barra e um texto com o percentual de progresso
             print(f"count = {count}/{len(dm_ativos.cnpj)}", end = "\r")
             progress_bar.empty()
             progress_bar.progress(value = count / len(dm_ativos.cnpj), text = f"Percentual dos {len(dm_ativos.cnpj)} ativos analisados")
@@ -682,6 +682,17 @@ def tab_web_scraping(
 
         # Executa o webscrapping
         df_result, dm_ativos, dm_ativos_not_found, list_not_found = webscrapping(list_categorias, tab_webscrapping)
+
+        # Nome do arquivo com resultados do webscrapping
+        result_file_name = f"Investimento_Webscrapping_{datetime.now().strftime('%Y-%m-%d_%H-%M')}.xlsx"
+
+        # Caso o usuário clique no botão, o arquivo template será baixado
+        tab_webscrapping.download_button(
+            label = "Download Webscrapping",
+            data = df_result,
+            file_name = result_file_name,
+            mime = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        )
 
     return None
 
