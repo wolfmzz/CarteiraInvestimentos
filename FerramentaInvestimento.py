@@ -684,7 +684,7 @@ def tab_web_scraping(
         df_result, dm_ativos, dm_ativos_not_found, list_not_found = webscrapping(list_categorias, tab_webscrapping)
 
         # Nome do arquivo com resultados do webscrapping
-        result_file_name = f"Investimento_Webscrapping_{datetime.now().strftime('%Y-%m-%d_%H-%M')}.xlsx"
+        result_file_name = f"Investimento_Webscrapping_temp.xlsx"
 
         # Caso o usuário clique no botão, o arquivo template será baixado
         tab_webscrapping.download_button(
