@@ -31,6 +31,7 @@ import pandas as pd                                                             
 from pandas import json_normalize
 
 # Bibliotecas para criar web apps
+import io
 from io import BytesIO                                                                                                                      # Biblioteca para manuseio de dados binários
 import streamlit as st                                                                                                                      # Biblioteca para criar web apps
 
@@ -239,6 +240,7 @@ def webscrapping(
     # Para cada categoria de ativos da SuperCarteira, pega cnpj de gestora de fundos de investimento desta categoria
     for categoria in list_categorias:
         dm_ativos = get_cnpj(dm_ativos, f"{input_path}/SuperCarteira_{categoria}.json", categoria).reset_index(drop = True)
+        # dm_ativos = dm_ativos.assign(Index = lambda _: _.index + 1).query("Index < 10").drop(columns = "Index")
         
     # Para cada ativo da SuperCarteira, pega rentabilidade e volatividade
     for ativo in dm_ativos.cnpj:
@@ -268,7 +270,7 @@ def webscrapping(
             # Contabiliza progresso em barra e um texto com o percentual de progresso
             print(f"count = {count}/{len(dm_ativos.cnpj)}", end = "\r")
             progress_bar.empty()
-            progress_bar.progress(value = count / len(dm_ativos.cnpj), text = f"Percentual dos {len(dm_ativos.cnpj)} ativos analisados")
+            progress_bar.progress(value = count / len(dm_ativos.cnpj), text = f"{count} dos {len(dm_ativos.cnpj)} ativos analisados")
             
             # Captura informações sobre produto
             product_info = (company_profile
@@ -681,18 +683,25 @@ def tab_web_scraping(
     if tab_webscrapping.button("Webscrapping"):
 
         # Executa o webscrapping
-        df_result, dm_ativos, dm_ativos_not_found, list_not_found = webscrapping(list_categorias, tab_webscrapping)
+        df_result, dm_ativos, dm_ativos_not_found, list_not_found = webscrapping(list_categorias, tab_webscrapping)    
+
+        print(f"df_result = {df_result}")
 
         # Nome do arquivo com resultados do webscrapping
         result_file_name = f"Investimento_Webscrapping_temp.xlsx"
 
+        # Assuming df_result is your DataFrame
+        excel_buffer = io.BytesIO()
+        df_result.to_excel(excel_buffer, index=False)
+        excel_buffer.seek(0)  # Rewind the buffer
+
         # Caso o usuário clique no botão, o arquivo template será baixado
         tab_webscrapping.download_button(
             label = "Download Webscrapping",
-            data = df_result,
+            data = excel_buffer,
             file_name = result_file_name,
             mime = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-        )
+        )    
 
     return None
 
