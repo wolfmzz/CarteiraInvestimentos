@@ -80,6 +80,7 @@ SLEEP_SECONDS = 2
 
 # Define as opções de score que podem ser escolhidas
 SCORE_OPTIONS = ["12m", "36m", "60m", "begin"]
+TOOLTIP_SIMPLE_COLUMNS = ["name", "profitability", "volatility", "categoria"]
 
 
 
@@ -403,7 +404,9 @@ def clean_to_chart(
 
 # Cria gráfico interativo
 def chart_interactive(
-    df_result_chart: pd.DataFrame
+    df_result_chart: pd.DataFrame,
+    TOOTLIP_SIMPLE: bool,
+    TOOLTIP_SIMPLE_COLUMNS: list
 ):
     """
     Função que cria gráfico interativo
@@ -414,9 +417,15 @@ def chart_interactive(
     Returns:
         fig: Gráfico interativo
     """
+    if TOOTLIP_SIMPLE == True:
+        tooltip_columns = TOOLTIP_SIMPLE_COLUMNS
+
+    else:
+        tooltip_columns = list(df_result_chart.columns)
+
     # Create an interactive scatter plot
     fig = px.scatter(df_result_chart, x = "volatility", y = "profitability", color = "categoria",
-                    hover_data = ["name", "profitability", "volatility", "categoria"])
+                    hover_data = tooltip_columns)
     
     # Layout do gráfico
     fig.update_layout(title = f"SuperCarteira: Rentabilidade x Volatilidade (filtrado < {MAX_VOLATILITY})",
@@ -572,7 +581,14 @@ def sidebar_part2(
         "Volatility", value = (min_volatility, max_volatility)
         )
 
-    return MAX_PROFITABILITY, MAX_VOLATILITY, MIN_PROFITABILITY, MIN_VOLATILITY
+    # Sidebar checkboxes para sugestões de filtros do gráfico
+    TOOLIP_SIMPLE = expander_chart.checkbox(
+        "Usar Tootltip Simples", 
+        value = False, 
+        help = "Ao clicar no botão 'Usar Tootltip Simples', o tooltip usará somente mostrará colunas chaves ao invés de todas as colunas"
+        )
+
+    return MAX_PROFITABILITY, MAX_VOLATILITY, MIN_PROFITABILITY, MIN_VOLATILITY, TOOLIP_SIMPLE
 
 
 # Função que cria a primeira parte da aba de data analysis
@@ -630,7 +646,9 @@ def tab_data_analysis_part2(
     MAX_PROFITABILITY: float,
     MAX_VOLATILITY: float,
     MIN_PROFITABILITY: float,
-    MIN_VOLATILITY: float
+    MIN_VOLATILITY: float,
+    TOOTLIP_SIMPLE: bool,
+    TOOLTIP_SIMPLE_COLUMNS: list
 ):
     """
     Função que cria a segunda parte da aba de data analysis
@@ -651,7 +669,7 @@ def tab_data_analysis_part2(
     df_result_chart = clean_to_chart(df_result, SCORE_TYPE, MAX_PROFITABILITY, MAX_VOLATILITY, MIN_PROFITABILITY, MIN_VOLATILITY)
 
     # Cria gráfico interativo
-    fig = chart_interactive(df_result_chart)
+    fig = chart_interactive(df_result_chart, TOOTLIP_SIMPLE, TOOLTIP_SIMPLE_COLUMNS)
 
     # Exibir o gráfico Plotly no aplicativo Streamlit
     tab_data_analysis.plotly_chart(fig, use_container_width=True)
@@ -688,7 +706,8 @@ def tab_web_scraping(
         print(f"df_result = {df_result}")
 
         # Nome do arquivo com resultados do webscrapping
-        result_file_name = f"Investimento_Webscrapping_temp.xlsx"
+        time_now = datetime.now().strftime("%Y-%m-%d %H-%M-%S")
+        result_file_name = f"Investimento_Webscrapping_{time_now}.xlsx"
 
         # Assuming df_result is your DataFrame
         excel_buffer = io.BytesIO()
@@ -724,9 +743,9 @@ PROFITABILITY, VOLATILITY, SCORE_TYPE = sidebar_part1(SCORE_OPTIONS)
 df_result = tab_data_analysis_part1(tab_data_analysis, df_template_converted)
 
 # Cria a segunda parte da sidebar
-MAX_PROFITABILITY, MAX_VOLATILITY, MIN_PROFITABILITY, MIN_VOLATILITY = sidebar_part2(df_result)
+MAX_PROFITABILITY, MAX_VOLATILITY, MIN_PROFITABILITY, MIN_VOLATILITY, TOOTLIP_SIMPLE = sidebar_part2(df_result)
 
 # Cria a segunda parte da aba de data analysis
-tab_data_analysis_part2(tab_data_analysis, df_result, SCORE_TYPE, MAX_PROFITABILITY, MAX_VOLATILITY, MIN_PROFITABILITY, MIN_VOLATILITY)
+tab_data_analysis_part2(tab_data_analysis, df_result, SCORE_TYPE, MAX_PROFITABILITY, MAX_VOLATILITY, MIN_PROFITABILITY, MIN_VOLATILITY, TOOTLIP_SIMPLE, TOOLTIP_SIMPLE_COLUMNS)
 
 
