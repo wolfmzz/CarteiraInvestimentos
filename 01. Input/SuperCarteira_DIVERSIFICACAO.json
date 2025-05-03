@@ -1,12 +1,12 @@
 {
   "DIVERSIFICACAO": [
     {
-      "identifier": "ID_FUNDO_9900000000030535",
-      "label": "ACCESS VERDE FIE PREVIDÊNCIA FI MULTIMERCADO",
-      "cnpj": "44.803.273/0001-40",
+      "identifier": "ID_FUNDO_9900000000060708",
+      "label": "ACCESS SPX THUNDERBOLT 2 FIC MULTIMERCADO",
+      "cnpj": "51.476.177/0001-08",
       "situation": "Em funcionamento normal",
       "managementCompany": "BTG Pactual WM Gestão de Recursos",
-      "isin": "BR0BYCCTF009",
+      "isin": "BR0G9YCTF004",
       "type": null,
       "stockExchange": null,
       "assetType": "FI"
@@ -35,22 +35,11 @@
     },
     {
       "identifier": "ID_FUNDO_9900000000011294",
-      "label": "ACESSO IBIUNA HEDGE STS 2 FIC MULTIMERCADO",
+      "label": "ACESSO IBIUNA HEDGE STS 2 RESP LIMITADA FIF CIC MULTIMERCADO",
       "cnpj": "34.246.343/0001-52",
       "situation": "Em funcionamento normal",
       "managementCompany": "Santander Brasil Asset Management",
       "isin": "BR04U9CTF009",
-      "type": null,
-      "stockExchange": null,
-      "assetType": "FI"
-    },
-    {
-      "identifier": "ID_FUNDO_9900000000006126",
-      "label": "ACESSO IBIUNA MACRO PREV FIC MULTIMERCADO",
-      "cnpj": "31.523.689/0001-62",
-      "situation": "Em funcionamento normal",
-      "managementCompany": "Santander Brasil Asset Management",
-      "isin": "BR03MYCTF009",
       "type": null,
       "stockExchange": null,
       "assetType": "FI"
@@ -139,6 +128,17 @@
       "situation": "Em funcionamento normal",
       "managementCompany": "Santander Brasil Asset Management",
       "isin": "BR04SICTF007",
+      "type": null,
+      "stockExchange": null,
+      "assetType": "FI"
+    },
+    {
+      "identifier": "ID_FUNDO_9900000000144468",
+      "label": "ACS KAPITALO ZETA PREV FIC MULTIMERCADO",
+      "cnpj": "55.136.698/0001-69",
+      "situation": "Em funcionamento normal",
+      "managementCompany": "BTG Pactual WM Gestão de Recursos",
+      "isin": "BR0JNHCTF004",
       "type": null,
       "stockExchange": null,
       "assetType": "FI"
@@ -298,34 +298,12 @@
       "assetType": "FI"
     },
     {
-      "identifier": "ID_FUNDO_9900000000003693",
-      "label": "BRADESCO IBIUNA PGBL/VGBL FIC MULTIMERCADO",
-      "cnpj": "24.752.725/0001-02",
-      "situation": "Em funcionamento normal",
-      "managementCompany": "Banco Bradesco",
-      "isin": "BR00BQCTF004",
-      "type": null,
-      "stockExchange": null,
-      "assetType": "FI"
-    },
-    {
       "identifier": "ID_FUNDO_452165",
       "label": "BRADESCO KAPITALO KAPPA FIC MULTIMERCADO",
       "cnpj": "28.428.226/0001-07",
       "situation": "Em funcionamento normal",
       "managementCompany": "Banco Bradesco",
       "isin": "BRKPP2CTF002",
-      "type": null,
-      "stockExchange": null,
-      "assetType": "FI"
-    },
-    {
-      "identifier": "ID_FUNDO_9900000000057831",
-      "label": "BRADESCO KAPITALO KAPPA PGBL/VGBL FIC MULTIMERCADO",
-      "cnpj": "51.291.848/0001-58",
-      "situation": "Em funcionamento normal",
-      "managementCompany": "Banco Bradesco",
-      "isin": "BR0G0ICTF006",
       "type": null,
       "stockExchange": null,
       "assetType": "FI"
@@ -397,17 +375,6 @@
       "assetType": "FI"
     },
     {
-      "identifier": "ID_FUNDO_9900000000004768",
-      "label": "BRADESCO VERDE AM PGBL/VGBL FIC MULTIMERCADO",
-      "cnpj": "30.447.330/0001-90",
-      "situation": "Em funcionamento normal",
-      "managementCompany": "Banco Bradesco",
-      "isin": "BR00XDCTF006",
-      "type": null,
-      "stockExchange": null,
-      "assetType": "FI"
-    },
-    {
       "identifier": "ID_FUNDO_9900000000025555",
       "label": "BRASILPREV GENOA CAPITAL CRUISE FIC MULTIMERCADO",
       "cnpj": "43.403.792/0001-58",
@@ -431,7 +398,7 @@
     },
     {
       "identifier": "ID_FUNDO_9900000000025542",
-      "label": "BRASILPREV IBIUNA ST FIC MULTIMERCADO CRÉDITO PRIVADO",
+      "label": "BRASILPREV IBIUNA ST RESP LIMITADA FIF CIC MULTIMERCADO CRÉDITO PRIVADO",
       "cnpj": "43.403.764/0001-30",
       "situation": "Em funcionamento normal",
       "managementCompany": "Brasilprev",
@@ -474,17 +441,6 @@
       "assetType": "FI"
     },
     {
-      "identifier": "ID_FUNDO_9900000000020704",
-      "label": "BRASILPREV VERDE AM FIC MULTIMERCADO",
-      "cnpj": "40.904.119/0001-03",
-      "situation": "Em funcionamento normal",
-      "managementCompany": "Brasilprev",
-      "isin": "BR082FCTF004",
-      "type": null,
-      "stockExchange": null,
-      "assetType": "FI"
-    },
-    {
       "identifier": "ID_FUNDO_336246",
       "label": "BTGP ACCESS GÁVEA MACRO FIC MULTIMERCADO",
       "cnpj": "17.816.013/0001-36",
@@ -497,7 +453,7 @@
     },
     {
       "identifier": "ID_FUNDO_438091",
-      "label": "BTGP ACCESS IBIUNA HEDGE STH FIC MULTIMERCADO",
+      "label": "BTGP ACCESS IBIUNA HEDGE STH FIF CIC MULTIMERCADO",
       "cnpj": "26.822.047/0001-24",
       "situation": "Em funcionamento normal",
       "managementCompany": "BTG Pactual WM Gestão de Recursos",
@@ -574,7 +530,7 @@
     },
     {
       "identifier": "ID_FUNDO_9900000000009901",
-      "label": "CSHG ALLOCATION IBIUNA HEDGE STHG II FIC MULTIMERCADO",
+      "label": "CSHG ALLOCATION IBIUNA HEDGE STHG II RESP LIMITADA FIF CIC MULTIMERCADO",
       "cnpj": "36.656.529/0001-05",
       "situation": "Em funcionamento normal",
       "managementCompany": "Credit Suisse Hedging-Griffo",
@@ -585,7 +541,7 @@
     },
     {
       "identifier": "ID_FUNDO_78236579",
-      "label": "CSHG ALLOCATION LEGACY CAPITAL FIC MULTIMERCADO",
+      "label": "CSHG ALLOCATION LEGACY CAPITAL RESP LIMITADA FIF CIC MULTIMERCADO",
       "cnpj": "29.236.579/0001-78",
       "situation": "Em funcionamento normal",
       "managementCompany": "Credit Suisse Hedging-Griffo",
@@ -618,7 +574,7 @@
     },
     {
       "identifier": "ID_FUNDO_9900000000025901",
-      "label": "GENOA CAPITAL CRUISE PREV A FIC MULTIMERCADO",
+      "label": "GENOA CAPITAL CRUISE PREV A RESP LIMITADA FIF CIC MULTIMERCADO",
       "cnpj": "42.535.184/0001-34",
       "situation": "Em funcionamento normal",
       "managementCompany": "Genoa Capital",
@@ -629,7 +585,7 @@
     },
     {
       "identifier": "ID_FUNDO_9900000000025895",
-      "label": "GENOA CAPITAL CRUISE PREV BTG FIC MULTIMERCADO",
+      "label": "GENOA CAPITAL CRUISE PREV BTG RESP LIMITADA FIF CIC MULTIMERCADO",
       "cnpj": "42.535.251/0001-10",
       "situation": "Em funcionamento normal",
       "managementCompany": "Genoa Capital",
@@ -640,7 +596,7 @@
     },
     {
       "identifier": "ID_FUNDO_9900000000025904",
-      "label": "GENOA CAPITAL CRUISE PREV ICATU SEGUROS FIC MULTIMERCADO",
+      "label": "GENOA CAPITAL CRUISE PREV ICATU SEGUROS RESP LIMITADA FIF CIC MULTIMERCADO",
       "cnpj": "42.535.455/0001-51",
       "situation": "Em funcionamento normal",
       "managementCompany": "Genoa Capital",
@@ -651,7 +607,7 @@
     },
     {
       "identifier": "ID_FUNDO_9900000000025898",
-      "label": "GENOA CAPITAL CRUISE PREV XP SEG FIC MULTIMERCADO",
+      "label": "GENOA CAPITAL CRUISE PREV XP SEG RESP LIMITADA FIF CIC MULTIMERCADO",
       "cnpj": "42.535.297/0001-30",
       "situation": "Em funcionamento normal",
       "managementCompany": "Genoa Capital",
@@ -673,7 +629,7 @@
     },
     {
       "identifier": "ID_FUNDO_9900000000010996",
-      "label": "GENOA CAPITAL RADAR ADVISORY FIC MULTIMERCADO",
+      "label": "GENOA CAPITAL RADAR ADVISORY RESP LIMITADA FIF CIC MULTIMERCADO",
       "cnpj": "36.017.731/0001-97",
       "situation": "Em funcionamento normal",
       "managementCompany": "Genoa Capital",
@@ -684,7 +640,7 @@
     },
     {
       "identifier": "ID_FUNDO_9900000000010786",
-      "label": "GENOA CAPITAL RADAR FIC MULTIMERCADO",
+      "label": "GENOA CAPITAL RADAR RESP LIMITADA FIF CIC MULTIMERCADO",
       "cnpj": "35.828.684/0001-07",
       "situation": "Em funcionamento normal",
       "managementCompany": "Genoa Capital",
@@ -706,10 +662,10 @@
     },
     {
       "identifier": "ID_FUNDO_9900000000011130",
-      "label": "GENOA CAPITAL RADAR SELEÇÃO FIC MULTIMERCADO",
+      "label": "GENOA CAPITAL RADAR SELEÇÃO RESP LIMITADA FIF CIC MULTIMERCADO",
       "cnpj": "37.348.037/0001-15",
       "situation": "Em funcionamento normal",
-      "managementCompany": "Itaú DTVM",
+      "managementCompany": "Itaú Asset Management",
       "isin": "BR04P9CTF006",
       "type": null,
       "stockExchange": null,
@@ -772,10 +728,10 @@
     },
     {
       "identifier": "ID_FUNDO_432751",
-      "label": "GÁVEA MACRO SELEÇÃO FIC MULTIMERCADO",
+      "label": "GÁVEA MACRO SELEÇÃO RESP LIMITADA FIF CIC MULTIMERCADO",
       "cnpj": "25.682.163/0001-22",
       "situation": "Em funcionamento normal",
-      "managementCompany": "Itaú DTVM",
+      "managementCompany": "Itaú Asset Management",
       "isin": "BRGVE1CTF005",
       "type": null,
       "stockExchange": null,
@@ -805,7 +761,7 @@
     },
     {
       "identifier": "ID_FUNDO_9900000000001046",
-      "label": "IBIUNA HEDGE ST ADVISORY FIC MULTIMERCADO",
+      "label": "IBIUNA HEDGE ST ADVISORY RESP LIMITADA FIF CIC MULTIMERCADO",
       "cnpj": "30.493.349/0001-73",
       "situation": "Em funcionamento normal",
       "managementCompany": "Ibiuna Investimentos",
@@ -815,19 +771,8 @@
       "assetType": "FI"
     },
     {
-      "identifier": "ID_FUNDO_9900000000140115",
-      "label": "IBIUNA HEDGE ST PLUS FIF CIC MULTIMERCADO",
-      "cnpj": "54.409.143/0001-80",
-      "situation": "Em funcionamento normal",
-      "managementCompany": "Ibiuna Investimentos",
-      "isin": "BR0ITCCTF004",
-      "type": null,
-      "stockExchange": null,
-      "assetType": "FI"
-    },
-    {
       "identifier": "ID_FUNDO_320153",
-      "label": "IBIUNA HEDGE STH FIC MULTIMERCADO",
+      "label": "IBIUNA HEDGE STH RESP LIMITADA FIF CIC MULTIMERCADO",
       "cnpj": "15.799.713/0001-34",
       "situation": "Em funcionamento normal",
       "managementCompany": "Ibiuna Investimentos",
@@ -849,10 +794,10 @@
     },
     {
       "identifier": "ID_FUNDO_9900000000022676",
-      "label": "IBIUNA HEDGE STR SELEÇÃO FIC MULTIMERCADO",
+      "label": "IBIUNA HEDGE STR SELEÇÃO RESP LIMITADA FIF CIC MULTIMERCADO",
       "cnpj": "42.282.089/0001-76",
       "situation": "Em funcionamento normal",
-      "managementCompany": "Itaú DTVM",
+      "managementCompany": "Itaú Asset Management",
       "isin": "BR08XUCTF003",
       "type": null,
       "stockExchange": null,
@@ -865,28 +810,6 @@
       "situation": "Em funcionamento normal",
       "managementCompany": "Ibiuna Investimentos",
       "isin": "BR0CP8CTF002",
-      "type": null,
-      "stockExchange": null,
-      "assetType": "FI"
-    },
-    {
-      "identifier": "ID_FUNDO_348287",
-      "label": "IBIUNA PREVIDÊNCIA ICATU FI MULTIMERCADO",
-      "cnpj": "18.041.877/0001-96",
-      "situation": "Em funcionamento normal",
-      "managementCompany": "Ibiuna Investimentos",
-      "isin": "BRIBN7CTF003",
-      "type": null,
-      "stockExchange": null,
-      "assetType": "FI"
-    },
-    {
-      "identifier": "ID_FUNDO_9900000000011164",
-      "label": "IBIUNA PREVIDÊNCIA XP SEGUROS RESP LIMITADA FIC MULTIMERCADO",
-      "cnpj": "36.620.088/0001-91",
-      "situation": "Em funcionamento normal",
-      "managementCompany": "XP Vida e Previdência",
-      "isin": "BR04RACTF006",
       "type": null,
       "stockExchange": null,
       "assetType": "FI"
@@ -915,7 +838,7 @@
     },
     {
       "identifier": "ID_FUNDO_9900000000028917",
-      "label": "IBIUNA ST S PREV FIC MULTIMERCADO PREVIDENCIÁRIO CRÉDITO PRIVADO",
+      "label": "IBIUNA ST S PREV RESP LIMITADA FIF CIC MULTIMERCADO PREVIDENCIÁRIO CRÉDITO PRIVADO",
       "cnpj": "44.682.496/0001-04",
       "situation": "Em funcionamento normal",
       "managementCompany": "Safra Asset Management",
@@ -931,6 +854,17 @@
       "situation": "Em funcionamento normal",
       "managementCompany": "XP Vida e Previdência",
       "isin": "BR0CBPCTF007",
+      "type": null,
+      "stockExchange": null,
+      "assetType": "FI"
+    },
+    {
+      "identifier": "ID_FUNDO_9900000000161340",
+      "label": "ICATU VERDE MASTER PREV 60 QUALIFICADO RESP LIMITADA FIF CIC MULTIMERCADO",
+      "cnpj": "59.134.727/0001-04",
+      "situation": "Em funcionamento normal",
+      "managementCompany": "Verde Asset Management",
+      "isin": "BR0N88CTF005",
       "type": null,
       "stockExchange": null,
       "assetType": "FI"
@@ -962,7 +896,7 @@
       "label": "ITAÚ KINEA ATLAS FIC MULTIMERCADO",
       "cnpj": "31.238.370/0001-95",
       "situation": "Em funcionamento normal",
-      "managementCompany": "Itaú DTVM",
+      "managementCompany": "Itaú Asset Management",
       "isin": "BR00N9CTF002",
       "type": null,
       "stockExchange": null,
@@ -986,17 +920,6 @@
       "situation": "Em funcionamento normal",
       "managementCompany": "Kapitalo Investimentos",
       "isin": "BRKLO1CTF009",
-      "type": null,
-      "stockExchange": null,
-      "assetType": "FI"
-    },
-    {
-      "identifier": "ID_FUNDO_9900000000026421",
-      "label": "KAPITALO KAPPA BP QUALIFICADO PREVIDÊNCIA FIC MULTIMERCADO",
-      "cnpj": "41.745.725/0001-96",
-      "situation": "Em funcionamento normal",
-      "managementCompany": "BTG Pactual WM Gestão de Recursos",
-      "isin": "BR0A75CTF009",
       "type": null,
       "stockExchange": null,
       "assetType": "FI"
@@ -1035,39 +958,6 @@
       "assetType": "FI"
     },
     {
-      "identifier": "ID_FUNDO_9900000000025559",
-      "label": "KAPITALO KAPPA ICATU QUALIFICADO PREVIDÊNCIA I FIC MULTIMERCADO",
-      "cnpj": "42.046.884/0001-65",
-      "situation": "Em funcionamento normal",
-      "managementCompany": "Kapitalo Investimentos",
-      "isin": "BR09R5CTF007",
-      "type": null,
-      "stockExchange": null,
-      "assetType": "FI"
-    },
-    {
-      "identifier": "ID_FUNDO_9900000000029586",
-      "label": "KAPITALO KAPPA PREVIDÊNCIA IVP FIC MULTIMERCADO",
-      "cnpj": "42.826.980/0001-26",
-      "situation": "Em funcionamento normal",
-      "managementCompany": "Kapitalo Investimentos",
-      "isin": "BR0BM1CTF001",
-      "type": null,
-      "stockExchange": null,
-      "assetType": "FI"
-    },
-    {
-      "identifier": "ID_FUNDO_9900000000025217",
-      "label": "KAPITALO KAPPA PREVIDÊNCIA XP SEGUROS RESP LIMITADA FIC MULTIMERCADO",
-      "cnpj": "42.847.502/0001-00",
-      "situation": "Em funcionamento normal",
-      "managementCompany": "XP Vida e Previdência",
-      "isin": "BR0B1CCTF002",
-      "type": null,
-      "stockExchange": null,
-      "assetType": "FI"
-    },
-    {
       "identifier": "ID_FUNDO_9900000000012738",
       "label": "KAPITALO KAPPA SELECTION FIC MULTIMERCADO",
       "cnpj": "38.489.326/0001-05",
@@ -1080,10 +970,10 @@
     },
     {
       "identifier": "ID_FUNDO_438685",
-      "label": "KAPITALO KAPPA SELEÇÃO FIC MULTIMERCADO",
+      "label": "KAPITALO KAPPA SELEÇÃO RESP LIMITADA FIF CIC MULTIMERCADO",
       "cnpj": "26.386.658/0001-77",
       "situation": "Em funcionamento normal",
-      "managementCompany": "Itaú DTVM",
+      "managementCompany": "Itaú Asset Management",
       "isin": "BRIVP3CTF006",
       "type": null,
       "stockExchange": null,
@@ -1149,7 +1039,7 @@
       "label": "KAPITALO ZETA SELEÇÃO FIC MULTIMERCADO",
       "cnpj": "41.163.578/0001-46",
       "situation": "Em funcionamento normal",
-      "managementCompany": "Itaú DTVM",
+      "managementCompany": "Itaú Asset Management",
       "isin": "BR07WVCTF005",
       "type": null,
       "stockExchange": null,
@@ -1267,7 +1157,7 @@
     },
     {
       "identifier": "ID_FUNDO_9900000000005241",
-      "label": "LEGACY CAPITAL EXCELLENCE FIC MULTIMERCADO",
+      "label": "LEGACY CAPITAL EXCELLENCE RESP LIMITADA FIF CIC MULTIMERCADO",
       "cnpj": "32.355.677/0001-39",
       "situation": "Em funcionamento normal",
       "managementCompany": "Legacy Capital",
@@ -1333,10 +1223,10 @@
     },
     {
       "identifier": "ID_FUNDO_9900000000004370",
-      "label": "LEGACY CAPITAL SELEÇÃO FIC MULTIMERCADO",
+      "label": "LEGACY CAPITAL SELEÇÃO RESP LIMITADA FIF CIC MULTIMERCADO",
       "cnpj": "31.341.469/0001-18",
       "situation": "Em funcionamento normal",
-      "managementCompany": "Itaú DTVM",
+      "managementCompany": "Itaú Asset Management",
       "isin": "BR00PECTF000",
       "type": null,
       "stockExchange": null,
@@ -1358,7 +1248,7 @@
       "label": "LEGACY CAPITAL V10 SELEÇÃO RESP LIMITADA FIF CIC MULTIMERCADO",
       "cnpj": "54.953.009/0001-46",
       "situation": "Em funcionamento normal",
-      "managementCompany": "Itaú DTVM",
+      "managementCompany": "Itaú Asset Management",
       "isin": "BR0JGNCTF006",
       "type": null,
       "stockExchange": null,
@@ -1399,29 +1289,18 @@
     },
     {
       "identifier": "ID_FUNDO_9900000000011843",
-      "label": "MANAGER IBIUNA HEDGE STH S FIC MULTIMERCADO",
+      "label": "MANAGER IBIUNA HEDGE STH S RESP LIMITADA FIF CIC MULTIMERCADO",
       "cnpj": "37.008.365/0001-72",
       "situation": "Em funcionamento normal",
-      "managementCompany": "Safra Asset Management",
+      "managementCompany": "Guide Investimentos",
       "isin": "BR099BCTF007",
       "type": null,
       "stockExchange": null,
       "assetType": "FI"
     },
     {
-      "identifier": "ID_FUNDO_9900000000010083",
-      "label": "MANAGER IBIUNA PREVIDÊNCIA FIC MULTIMERCADO PREVIDENCIÁRIO",
-      "cnpj": "35.755.281/0001-77",
-      "situation": "Em funcionamento normal",
-      "managementCompany": "Safra Asset Management",
-      "isin": "BR04WICTF009",
-      "type": null,
-      "stockExchange": null,
-      "assetType": "FI"
-    },
-    {
       "identifier": "ID_FUNDO_9900000000028918",
-      "label": "MANAGER IBIUNA ST PREV FIC MULTIMERCADO PREVIDENCIÁRIO CRÉDITO PRIVADO",
+      "label": "MANAGER IBIUNA ST PREV RESP LIMITADA FIF CIC MULTIMERCADO PREVIDENCIÁRIO CRÉDITO PRIVADO",
       "cnpj": "44.681.889/0001-95",
       "situation": "Em funcionamento normal",
       "managementCompany": "Safra Asset Management",
@@ -1442,22 +1321,11 @@
       "assetType": "FI"
     },
     {
-      "identifier": "ID_FUNDO_9900000000027185",
-      "label": "MANAGER KAPITALO KAPPA PREVIDÊNCIA FIC MULTIMERCADO PREVIDENCIÁRIO",
-      "cnpj": "43.214.381/0001-14",
-      "situation": "Em funcionamento normal",
-      "managementCompany": "Safra Asset Management",
-      "isin": "BR0BGHCTF005",
-      "type": null,
-      "stockExchange": null,
-      "assetType": "FI"
-    },
-    {
       "identifier": "ID_FUNDO_443298",
-      "label": "MANAGER KAPITALO ZETA FIC MULTIMERCADO",
+      "label": "MANAGER KAPITALO ZETA RESP LIMITADA FIF CIC MULTIMERCADO",
       "cnpj": "27.782.855/0001-78",
       "situation": "Em funcionamento normal",
-      "managementCompany": "Safra Asset Management",
+      "managementCompany": "Guide Investimentos",
       "isin": "BRZTA2CTF008",
       "type": null,
       "stockExchange": null,
@@ -1465,10 +1333,10 @@
     },
     {
       "identifier": "ID_FUNDO_9900000000011968",
-      "label": "MANAGER KAPITALO ZETA S FIC MULTIMERCADO",
+      "label": "MANAGER KAPITALO ZETA S RESP LIMITADA FIF CIC MULTIMERCADO",
       "cnpj": "37.018.145/0001-20",
       "situation": "Em funcionamento normal",
-      "managementCompany": "Safra Asset Management",
+      "managementCompany": "Guide Investimentos",
       "isin": "BR08VBCTF007",
       "type": null,
       "stockExchange": null,
@@ -1531,7 +1399,7 @@
     },
     {
       "identifier": "ID_FUNDO_9900000000022377",
-      "label": "MANAGER SPX LANCER PLUS FIC MULTIMERCADO PREVIDENCIÁRIO",
+      "label": "MANAGER SPX LANCER PLUS RESP LIMITADA FIF CIC MULTIMERCADO PREVIDENCIÁRIO",
       "cnpj": "42.120.262/0001-30",
       "situation": "Em funcionamento normal",
       "managementCompany": "Safra Asset Management",
@@ -1542,10 +1410,10 @@
     },
     {
       "identifier": "ID_FUNDO_9900000000012444",
-      "label": "MANAGER SPX NIMITZ IQ FIC MULTIMERCADO",
+      "label": "MANAGER SPX NIMITZ IQ RESP LIMITADA FIF CIC MULTIMERCADO",
       "cnpj": "37.042.136/0001-74",
       "situation": "Em funcionamento normal",
-      "managementCompany": "Safra Asset Management",
+      "managementCompany": "Guide Investimentos",
       "isin": "BR0746CTF000",
       "type": null,
       "stockExchange": null,
@@ -1564,10 +1432,10 @@
     },
     {
       "identifier": "ID_FUNDO_9900000000003676",
-      "label": "MANAGER VERDE FIC MULTIMERCADO",
+      "label": "MANAGER VERDE RESP LIMITADA FIF CIC MULTIMERCADO",
       "cnpj": "30.658.606/0001-80",
       "situation": "Em funcionamento normal",
-      "managementCompany": "Safra Asset Management",
+      "managementCompany": "Guide Investimentos",
       "isin": "BR00D8CTF006",
       "type": null,
       "stockExchange": null,
@@ -1619,10 +1487,10 @@
     },
     {
       "identifier": "ID_FUNDO_9900000000050116",
-      "label": "MAR ABSOLUTO SELEÇÃO FIC MULTIMERCADO",
+      "label": "MAR ABSOLUTO SELEÇÃO RESP LIMITADA FIF CIC MULTIMERCADO",
       "cnpj": "49.559.798/0001-03",
       "situation": "Em funcionamento normal",
-      "managementCompany": "Itaú DTVM",
+      "managementCompany": "Itaú Asset Management",
       "isin": "BR0ET8CTF006",
       "type": null,
       "stockExchange": null,
@@ -1630,7 +1498,7 @@
     },
     {
       "identifier": "ID_FUNDO_9900000000005584",
-      "label": "NIMITZ SPX FIC MULTIMERCADO",
+      "label": "NIMITZ SPX RESP LIMITADA FIF CIC MULTIMERCADO",
       "cnpj": "31.457.455/0001-64",
       "situation": "Em funcionamento normal",
       "managementCompany": "SPX Capital",
@@ -1674,7 +1542,7 @@
     },
     {
       "identifier": "ID_FUNDO_419011",
-      "label": "SPX NIMITZ GRIPEN ADVISORY FIC MULTIMERCADO",
+      "label": "SPX NIMITZ GRIPEN ADVISORY RESP LIMITADA FIF CIC MULTIMERCADO",
       "cnpj": "24.193.691/0001-55",
       "situation": "Em funcionamento normal",
       "managementCompany": "SPX Capital",
@@ -1685,7 +1553,7 @@
     },
     {
       "identifier": "ID_FUNDO_9900000000020850",
-      "label": "SPX NIMITZ MODALMAIS FIC MULTIMERCADO",
+      "label": "SPX NIMITZ MODALMAIS RESP LIMITADA FIF CIC MULTIMERCADO",
       "cnpj": "41.424.080/0001-90",
       "situation": "Em funcionamento normal",
       "managementCompany": "SPX Capital",
@@ -1696,7 +1564,7 @@
     },
     {
       "identifier": "ID_FUNDO_458351",
-      "label": "SPX NIMITZ SELECTION FIC MULTIMERCADO",
+      "label": "SPX NIMITZ SELECTION RESP LIMITADA FIF CIC MULTIMERCADO",
       "cnpj": "27.945.311/0001-80",
       "situation": "Em funcionamento normal",
       "managementCompany": "SPX Capital",
@@ -1707,10 +1575,10 @@
     },
     {
       "identifier": "ID_FUNDO_46851728",
-      "label": "SPX NIMITZ SELEÇÃO FIC MULTIMERCADO",
+      "label": "SPX NIMITZ SELEÇÃO RESP LIMITADA FIF CIC MULTIMERCADO",
       "cnpj": "28.851.728/0001-46",
       "situation": "Em funcionamento normal",
-      "managementCompany": "Itaú DTVM",
+      "managementCompany": "Itaú Asset Management",
       "isin": "BRISS1CTF002",
       "type": null,
       "stockExchange": null,
@@ -1750,11 +1618,33 @@
       "assetType": "FI"
     },
     {
+      "identifier": "ID_FUNDO_9900000000020851",
+      "label": "SPX RAPTOR 180 ADVISORY RESP LIMITADA FIF CIC MULTIMERCADO CRÉDITO PRIVADO",
+      "cnpj": "41.342.497/0001-03",
+      "situation": "Em funcionamento normal",
+      "managementCompany": "SPX Capital",
+      "isin": "BR07YICTF008",
+      "type": null,
+      "stockExchange": null,
+      "assetType": "FI"
+    },
+    {
+      "identifier": "ID_FUNDO_349577",
+      "label": "SPXR INVESTIMENTO NO EXTERIOR FIC MULTIMERCADO CRÉDITO PRIVADO",
+      "cnpj": "18.489.909/0001-10",
+      "situation": "Em funcionamento normal",
+      "managementCompany": "BTG Pactual WM Gestão de Recursos",
+      "isin": "BRSPR9CTF007",
+      "type": null,
+      "stockExchange": null,
+      "assetType": "FI"
+    },
+    {
       "identifier": "ID_FUNDO_9900000000003736",
       "label": "VERDE 60 SELEÇÃO FIC MULTIMERCADO",
       "cnpj": "31.024.283/0001-35",
       "situation": "Em funcionamento normal",
-      "managementCompany": "Itaú DTVM",
+      "managementCompany": "Itaú Asset Management",
       "isin": "BR00C5CTF003",
       "type": null,
       "stockExchange": null,
@@ -1787,7 +1677,7 @@
       "label": "VERDE AM 60 VTR FIF CIC MULTIMERCADO",
       "cnpj": "40.575.794/0001-36",
       "situation": "Em funcionamento normal",
-      "managementCompany": "Empiricus Investimentos",
+      "managementCompany": "Empiricus Gestão",
       "isin": "BR0KZJCTF002",
       "type": null,
       "stockExchange": null,
@@ -1805,45 +1695,12 @@
       "assetType": "FI"
     },
     {
-      "identifier": "ID_FUNDO_409073",
-      "label": "VERDE AM ICATU PREVIDÊNCIA FIC MULTIMERCADO PREVIDENCIÁRIO",
-      "cnpj": "23.339.936/0001-47",
-      "situation": "Em funcionamento normal",
-      "managementCompany": "Verde Asset Management",
-      "isin": "BRAMC2CTF002",
-      "type": null,
-      "stockExchange": null,
-      "assetType": "FI"
-    },
-    {
-      "identifier": "ID_FUNDO_420220",
-      "label": "VERDE AM ITAÚ PREV FI MULTIMERCADO",
-      "cnpj": "24.196.072/0001-14",
-      "situation": "Em funcionamento normal",
-      "managementCompany": "Verde Asset Management",
-      "isin": "BRIVR7CTF005",
-      "type": null,
-      "stockExchange": null,
-      "assetType": "FI"
-    },
-    {
       "identifier": "ID_FUNDO_9900000000000727",
-      "label": "VERDE AM S60 FIC MULTIMERCADO",
+      "label": "VERDE AM S60 RESP LIMITADA FIF CIC MULTIMERCADO",
       "cnpj": "30.592.665/0001-00",
       "situation": "Em funcionamento normal",
       "managementCompany": "Verde Asset Management",
       "isin": "BR00EICTF005",
-      "type": null,
-      "stockExchange": null,
-      "assetType": "FI"
-    },
-    {
-      "identifier": "ID_FUNDO_9900000000004520",
-      "label": "VERDE AM SCENA ADVISORY XP SEGUROS PREV RESP LIMITADA FIC MULTIMERCADO",
-      "cnpj": "30.994.931/0001-13",
-      "situation": "Em funcionamento normal",
-      "managementCompany": "XP Vida e Previdência",
-      "isin": "BR00TICTF003",
       "type": null,
       "stockExchange": null,
       "assetType": "FI"
@@ -1905,10 +1762,10 @@
     },
     {
       "identifier": "ID_FUNDO_9900000000021657",
-      "label": "VISTA HEDGE SELEÇÃO FIC MULTIMERCADO",
+      "label": "VISTA HEDGE SELEÇÃO RESP LIMITADA FIF CIC MULTIMERCADO",
       "cnpj": "41.342.624/0001-74",
       "situation": "Em funcionamento normal",
-      "managementCompany": "Itaú DTVM",
+      "managementCompany": "Itaú Asset Management",
       "isin": "BR08BUCTF009",
       "type": null,
       "stockExchange": null,
@@ -1946,6 +1803,17 @@
       "type": null,
       "stockExchange": null,
       "assetType": "FI"
+    },
+    {
+      "identifier": "37745701",
+      "label": "KINEA CRÉDITO AGRO FIAGRO FII - KNCA11",
+      "cnpj": "41.745.701/0001-37",
+      "situation": "Em funcionamento normal",
+      "managementCompany": "Kinea Investimentos",
+      "isin": "BRKNCACTF006",
+      "type": null,
+      "stockExchange": null,
+      "assetType": "FII"
     }
   ]
 }

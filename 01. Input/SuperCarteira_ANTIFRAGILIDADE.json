@@ -71,7 +71,7 @@
       "label": "EMPIRICUS DÓLAR FIF CAMBIAL",
       "cnpj": "33.952.939/0001-05",
       "situation": "Em funcionamento normal",
-      "managementCompany": "Empiricus Investimentos",
+      "managementCompany": "Empiricus Gestão",
       "isin": "BR02G0CTF008",
       "type": null,
       "stockExchange": null,
@@ -90,7 +90,7 @@
     },
     {
       "identifier": "ID_FUNDO_9900000000010998",
-      "label": "ITAÚ INDEX DÓLAR FIC CAMBIAL",
+      "label": "ITAÚ INDEX DÓLAR RESP LIMITADA FIF CIC CAMBIAL",
       "cnpj": "37.306.612/0001-17",
       "situation": "Em funcionamento normal",
       "managementCompany": "Itaú Asset Management",
@@ -112,7 +112,7 @@
     },
     {
       "identifier": "ID_FUNDO_9900000000011457",
-      "label": "ITAÚ INDEX GOLD USD INVESTIMENTO NO EXTERIOR FIC MULTIMERCADO",
+      "label": "ITAÚ INDEX GOLD USD INVESTIMENTO NO EXTERIOR RESP LIMITADA FIF CIC MULTIMERCADO",
       "cnpj": "37.555.088/0001-18",
       "situation": "Em funcionamento normal",
       "managementCompany": "Itaú Asset Management",
@@ -123,7 +123,7 @@
     },
     {
       "identifier": "ID_FUNDO_367044",
-      "label": "MAPFRE FI CAMBIAL",
+      "label": "MAPFRE RESP LIMITADA FIF CAMBIAL",
       "cnpj": "20.077.065/0001-42",
       "situation": "Em funcionamento normal",
       "managementCompany": "MAPFRE Investimentos",
@@ -167,7 +167,7 @@
     },
     {
       "identifier": "ID_FUNDO_413933",
-      "label": "TREND OURO FI MULTIMERCADO",
+      "label": "TREND OURO RESP LIMITADA FIF MULTIMERCADO",
       "cnpj": "22.963.439/0001-52",
       "situation": "Em funcionamento normal",
       "managementCompany": "XP Asset Management",

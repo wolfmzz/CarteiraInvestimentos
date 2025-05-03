@@ -2,7 +2,7 @@
   "OUTROS": [
     {
       "identifier": "ID_FUNDO_9900000000014046",
-      "label": "+P INVESTIMENTO NO EXTERIOR FIC MULTIMERCADO CRÉDITO PRIVADO",
+      "label": "+P INVESTIMENTO NO EXTERIOR RESP LIMITADA FIF CIC MULTIMERCADO CRÉDITO PRIVADO",
       "cnpj": "39.959.611/0001-05",
       "situation": "Em funcionamento normal",
       "managementCompany": "ANDBANK",
@@ -89,23 +89,23 @@
       "assetType": "FI"
     },
     {
-      "identifier": "ID_FUNDO_9900000000004366",
-      "label": "051 AUDAX RESP LIMITADA FIF MULTIMERCADO CRÉDITO PRIVADO",
-      "cnpj": "31.341.367/0001-00",
+      "identifier": "ID_FUNDO_9900000000031956",
+      "label": "051 AURORA BOREAL FI MULTIMERCADO CRÉDITO PRIVADO",
+      "cnpj": "46.082.374/0001-02",
       "situation": "Em funcionamento normal",
       "managementCompany": "051 Capital",
-      "isin": "BR00PKCTF007",
+      "isin": "BR0L88CTF009",
       "type": null,
       "stockExchange": null,
       "assetType": "FI"
     },
     {
-      "identifier": "ID_FUNDO_9900000000031956",
-      "label": "051 AURORA BOREAL INVESTIMENTO NO EXTERIOR FI MULTIMERCADO CRÉDITO PRIVADO",
-      "cnpj": "46.082.374/0001-02",
+      "identifier": "ID_FUNDO_392057",
+      "label": "051 BLUE MARLIN INVESTIMENTO NO EXTERIOR FIC MULTIMERCADO CRÉDITO PRIVADO",
+      "cnpj": "03.998.582/0001-35",
       "situation": "Em funcionamento normal",
       "managementCompany": "051 Capital",
-      "isin": "BR0L88CTF009",
+      "isin": "BRBLMLCTF005",
       "type": null,
       "stockExchange": null,
       "assetType": "FI"
