@@ -423,6 +423,9 @@ def webscrapping_maisretorno(
         # try, se nao funcionar, então guarda mensagem de erro e contagem de erro
         try:
 
+            # Categoria do ativo
+            categoria = dm_ativos.query("cnpj == @ativo")["categoria"].values[0]
+
             # Espera x segundos para não sobrecarregar o servidor
             time.sleep(SLEEP_SECONDS)
             count += 1
@@ -452,6 +455,7 @@ def webscrapping_maisretorno(
             df_result_temp = (pd.json_normalize(response.json())
                     .reset_index()
                     .assign(cnpj = lambda _: ativo)
+                    .assign(categoria = lambda _: categoria)
                     .rename(columns = dict_rename_maisretorno)
                     .filter(list(dict_rename_maisretorno.values()))
                     .assign(score_12m = lambda _: _.profitability_12m / _.volatility_12m)
@@ -687,7 +691,8 @@ def clean_to_chart(
     MAX_PROFITABILITY: float = 999999,
     MAX_VOLATILITY: float = 100,
     MIN_PROFITABILITY: float = 0,
-    MIN_VOLATILITY: float = 0
+    MIN_VOLATILITY: float = 0,
+    BTG_AVAILABLE: bool = False,
 ):
     """
     Função que prepara os dados para criar os gráficos
@@ -716,6 +721,10 @@ def clean_to_chart(
         .query(f"profitability > {MIN_PROFITABILITY}")
         .query(f"volatility > {MIN_VOLATILITY}")
     )
+
+    # Filtra somente produtos do BTG caso BTG_AVAILABLE seja True
+    if BTG_AVAILABLE == True:
+        df_result_chart = (df_result_chart.copy().query("disponibilidade_btg == True"))
 
     return df_result_chart
 
@@ -906,7 +915,14 @@ def sidebar_part2(
         help = "Ao clicar no botão 'Usar Tootltip Simples', o tooltip usará somente mostrará colunas chaves ao invés de todas as colunas"
         )
 
-    return MAX_PROFITABILITY, MAX_VOLATILITY, MIN_PROFITABILITY, MIN_VOLATILITY, TOOLIP_SIMPLE
+    # Sidebar checkboxes para sugestões de filtros do gráfico
+    BTG_AVAILABLE = expander_chart.checkbox(
+        "Mostrar somente produtos disponíveis no BTG", 
+        value = False, 
+        help = "Ao clicar no botão 'Mostrar somente produtos disponíveis no BTG', os ativos que aparecererão no gráfico serão somente os disponíveis no BTG"
+        )
+
+    return MAX_PROFITABILITY, MAX_VOLATILITY, MIN_PROFITABILITY, MIN_VOLATILITY, TOOLIP_SIMPLE, BTG_AVAILABLE
 
 
 # Função que cria a primeira parte da aba de data analysis
@@ -966,7 +982,8 @@ def tab_data_analysis_part2(
     MIN_PROFITABILITY: float,
     MIN_VOLATILITY: float,
     TOOTLIP_SIMPLE: bool,
-    TOOLTIP_SIMPLE_COLUMNS: list
+    TOOLTIP_SIMPLE_COLUMNS: list,
+    BTG_AVAILABLE: bool
 ):
     """
     Função que cria a segunda parte da aba de data analysis
@@ -984,7 +1001,7 @@ def tab_data_analysis_part2(
         None
     """
     # Prepara os dados para criar os gráficos
-    df_result_chart = clean_to_chart(df_result, SCORE_TYPE, MAX_PROFITABILITY, MAX_VOLATILITY, MIN_PROFITABILITY, MIN_VOLATILITY)
+    df_result_chart = clean_to_chart(df_result, SCORE_TYPE, MAX_PROFITABILITY, MAX_VOLATILITY, MIN_PROFITABILITY, MIN_VOLATILITY, BTG_AVAILABLE)
 
     # Cria gráfico interativo
     fig = chart_interactive(df_result_chart, TOOTLIP_SIMPLE, TOOLTIP_SIMPLE_COLUMNS)
@@ -1184,7 +1201,7 @@ PROFITABILITY, VOLATILITY, SCORE_TYPE = sidebar_part1(SCORE_OPTIONS)
 df_result = tab_data_analysis_part1(tab_data_analysis, df_template_converted)
 
 # Cria a segunda parte da sidebar
-MAX_PROFITABILITY, MAX_VOLATILITY, MIN_PROFITABILITY, MIN_VOLATILITY, TOOTLIP_SIMPLE = sidebar_part2(df_result)
+MAX_PROFITABILITY, MAX_VOLATILITY, MIN_PROFITABILITY, MIN_VOLATILITY, TOOTLIP_SIMPLE, BTG_AVAILABLE = sidebar_part2(df_result)
 
 # Cria a segunda parte da aba de data analysis
-tab_data_analysis_part2(tab_data_analysis, df_result, SCORE_TYPE, MAX_PROFITABILITY, MAX_VOLATILITY, MIN_PROFITABILITY, MIN_VOLATILITY, TOOTLIP_SIMPLE, TOOLTIP_SIMPLE_COLUMNS)
+tab_data_analysis_part2(tab_data_analysis, df_result, SCORE_TYPE, MAX_PROFITABILITY, MAX_VOLATILITY, MIN_PROFITABILITY, MIN_VOLATILITY, TOOTLIP_SIMPLE, TOOLTIP_SIMPLE_COLUMNS, BTG_AVAILABLE)
