@@ -37,6 +37,8 @@ import streamlit as st                                                          
 
 # Bibliotecas de manipulação de dados e webscrapping
 import http.client
+import requests
+import json
 
 # Bibliotecas para manipulação de datas e horas
 import time                                                                                                                                 # Biblioteca que permite realizar operações relacionadas com tempo 
@@ -81,6 +83,11 @@ SLEEP_SECONDS = 2
 # Define as opções de score que podem ser escolhidas
 SCORE_OPTIONS = ["12m", "36m", "60m", "begin"]
 TOOLTIP_SIMPLE_COLUMNS = ["name", "profitability", "volatility", "categoria"]
+
+# Parametros para webscrapping do BTG
+SIZE_PER_PAGE_BTG = 150
+MAX_PRODUCTS_BTG = 750
+MAX_PAGES_BTG = int(MAX_PRODUCTS_BTG / SIZE_PER_PAGE_BTG)
 
 
 
@@ -204,7 +211,7 @@ def string_to_int(
 
 
 # Função que executa o webscrapping
-def webscrapping(
+def webscrapping_maisretorno_old(
     list_categorias: list,
     tab_webscrapping: st.tabs
 ):
@@ -338,7 +345,7 @@ def webscrapping(
         .assign(profitability_begin = list_profitability_begin)
         .assign(volatility_begin = list_volatility_begin)
         .assign(sharpe_ratio_begin = list_sharpe_ratio_begin)
-        .drop(columns = "cnpj")
+        # .drop(columns = "cnpj")
         .assign(score_12m = lambda _: _.profitability_12m / _.volatility_12m)
         .assign(score_36m = lambda _: _.profitability_36m / _.volatility_36m)
         .assign(score_60m = lambda _: _.profitability_60m / _.volatility_60m)
@@ -360,6 +367,317 @@ def webscrapping(
     tab_webscrapping.write(f"Ativos não encontrados: {list_not_found}")
 
     return df_result, dm_ativos, dm_ativos_not_found, list_not_found
+
+
+# Função que executa o webscrapping
+def webscrapping_maisretorno(
+    list_categorias: list,
+    tab_webscrapping: st.tabs
+):
+    """
+    Função que executa o webscrapping
+
+    Args:
+        list_categorias (list): Lista de categorias de ativos
+
+    Returns:
+        df_result: DataFrame com dados limpos para criar gráficos
+        dm_ativos: DataFrame com CNPJ de gestoras de fundos de investimento
+        dm_ativos_not_found: Lista de ativos não encontrados
+        list_not_found: Lista de ativos não encontrados
+    """
+    # Abertura de listas vazias e contadores para o Loop
+    dm_ativos = pd.DataFrame()
+    df_result = pd.DataFrame()
+    list_not_found = []
+    count = 0
+
+    # Dicionário que ajuda a renomear as colunas
+    dict_rename_maisretorno = {
+        "nicename": "name",
+        "cnpj": "cnpj",
+        "stats.positive_months": "positive_months",
+        "stats.negative_months": "negative_months",
+        "stats.timeframe.last_12_months.profitability": "profitability_12m",
+        "stats.timeframe.last_12_months.volatility": "volatility_12m",
+        "stats.timeframe.last_36_months.profitability": "profitability_36m",
+        "stats.timeframe.last_36_months.volatility": "volatility_36m",
+        "stats.timeframe.last_60_months.profitability": "profitability_60m",
+        "stats.timeframe.last_60_months.volatility": "volatility_60m",
+        "stats.timeframe.begin.profitability": "profitability_begin",
+        "stats.timeframe.begin.volatility": "volatility_begin",
+        "stats.timeframe.begin.sharpe_ratio": "sharpe_ratio_begin"
+    }
+
+    # Cria barra de progresso e percentual do progresso do webscrapping
+    progress_bar = tab_webscrapping.progress(0)
+
+    # Para cada categoria de ativos da SuperCarteira, pega cnpj de gestora de fundos de investimento desta categoria
+    for categoria in list_categorias:
+        dm_ativos = get_cnpj(dm_ativos, f"{input_path}/SuperCarteira_{categoria}.json", categoria).reset_index(drop = True)
+        # dm_ativos = dm_ativos.assign(Index = lambda _: _.index + 1).query("Index < 3").drop(columns = "Index")
+        
+    # Para cada ativo da SuperCarteira, pega rentabilidade e volatividade
+    for ativo in dm_ativos.cnpj:
+
+        # try, se nao funcionar, então guarda mensagem de erro e contagem de erro
+        try:
+
+            # Espera x segundos para não sobrecarregar o servidor
+            time.sleep(SLEEP_SECONDS)
+            count += 1
+
+            # Parametros para realizar o webcrawling
+            url = f"https://api.maisretorno.com/v3/general/stats/{ativo}:fi"
+            querystring = {"format_decimal":"false"}
+            payload = ""
+            headers = {
+                "Accept": "application/json, text/plain, */*",
+                "Referer": "https://maisretorno.com/",
+                "sec-ch-ua": '"Chromium";v="134", "Not:A-Brand";v="24", "Google Chrome";v="134"',
+                "sec-ch-ua-mobile": "?0",
+                "sec-ch-ua-platform": '"macOS"',
+                "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36"
+            }
+
+            # Executa a busca da informação
+            response = requests.request("GET", url, data=payload, headers=headers, params=querystring)
+
+            # Contabiliza progresso em barra e um texto com o percentual de progresso
+            print(f"count = {count}/{len(dm_ativos.cnpj)}", end = "\r")
+            progress_bar.empty()
+            progress_bar.progress(value = count / len(dm_ativos.cnpj), text = f"{count} dos {len(dm_ativos.cnpj)} ativos analisados")
+
+            # Captura a informação desse ativo e ajusta o DataFrame
+            df_result_temp = (pd.json_normalize(response.json())
+                    .reset_index()
+                    .assign(cnpj = lambda _: ativo)
+                    .rename(columns = dict_rename_maisretorno)
+                    .filter(list(dict_rename_maisretorno.values()))
+                    .assign(score_12m = lambda _: _.profitability_12m / _.volatility_12m)
+                    .assign(score_36m = lambda _: _.profitability_36m / _.volatility_36m)
+                    .assign(score_60m = lambda _: _.profitability_60m / _.volatility_60m)
+                    .assign(score_begin = lambda _: _.profitability_begin / _.volatility_begin)
+                    .assign(score_mean = lambda _: _.apply(calculate_mean, axis=1))  
+                    .assign(score_std = lambda _: _.apply(calculate_std, axis=1))  
+                    .assign(score_all = lambda _: _.score_mean / _.score_std)
+                    .sort_values(by = "score_all", ascending = False)
+                    .assign(total_months = lambda _: _.positive_months + _.negative_months)
+                    .assign(perc_positive_months = lambda _: _.positive_months / _.total_months)
+                    .assign(perc_negative_months = lambda _: _.negative_months / _.total_months)
+            )
+
+            # Junta ao DataFrame de resultados
+            df_result = pd.concat([df_result, df_result_temp], ignore_index=True)
+
+        # Caso não seja possível puxar algum dos ativos
+        except Exception as e:
+
+            # Adicionar o ativo a lista de ativos não encontrados
+            list_not_found.append(ativo)
+
+            print(f"Erro: {e}")
+            print(f"Erro no cnpj: {ativo}")
+            print(f"Erro no count: {count}")
+
+    # Transforma itens da lista de ativos não encontrados em inteiros
+    list_not_found = string_to_int(list_not_found)
+
+    # Cria DataFrame com ativos não encontrados
+    dm_ativos_not_found = dm_ativos.query("cnpj == @list_not_found")
+
+    # Remover o ativo da lista de ativos
+    dm_ativos = dm_ativos.query("cnpj != @list_not_found")
+
+    # Retorna quantos ativos foram encontrados e quantos não foram
+    tab_webscrapping.write(f"Quantidade de ativos encontrados: {len(dm_ativos)}")
+    tab_webscrapping.write(f"Quantidade de ativos não encontrados: {len(dm_ativos_not_found)}")
+
+    # Nomeia quais ativos não foram encontrados
+    tab_webscrapping.write(f"Ativos não encontrados: {list_not_found}")
+
+    return df_result, dm_ativos, dm_ativos_not_found, list_not_found
+
+
+# Função que executa o webscrapping para descobrir os ativos disponíveis no BTG
+def webscrapping_btg(
+    MAX_PRODUCTS_BTG: int,
+    SIZE_PER_PAGE_BTG: int
+):
+
+    """
+    Função que executa o webscrapping para descobrir os ativos disponíveis no BTG
+
+    Args:
+        list_categorias (list): Lista de categorias de ativos
+
+    Returns:
+        df_result: DataFrame com dados limpos para criar gráficos
+        dm_ativos: DataFrame com CNPJ de gestoras de fundos de investimento
+        dm_ativos_not_found: Lista de ativos não encontrados
+        list_not_found: Lista de ativos não encontrados
+    """
+    webscrapping_btg_result = pd.DataFrame()
+    range_pages = range(1, int(MAX_PAGES_BTG) + 1)
+    print(f"range_pages = {range_pages}")
+
+    # Para cada página de produtos disponíveis no BTG
+    for page in range_pages:
+
+        # # Espera x segundos para não sobrecarregar o servidor
+        # time.sleep(SLEEP_SECONDS)
+
+        url = "https://investimentos.btgpactual.com/services/api/funds-public/public/funds/list"
+
+        querystring = {"page": page, "size": SIZE_PER_PAGE_BTG, "sortByName": "FUND_NAME", "sortingDirection": "ASC"}
+
+        headers = {
+            'accept': "application/json, text/plain, */*",
+            'accept-language': "en-US,en;q=0.9",
+            'Cookie': '_ga=GA1.1.1635766482.1724939877; _vis_opt_test_cookie=1; _vwo_uuid=DEE327AC8E341418F8C2E57E190E39C1F; rdtrk=%7B%22id%22%3A%22c13c71a9-c43f-4d74-8af2-78e9a024f52b%22%7D; _ga_9VMTRRBLL7=GS1.1.1724939876.1.1.1724939961.45.0.0; _vwo_uuid_v2=D45D5C870D65C04741508D801377C9E0E|d1fc097af737999902c0c700c77ccd01; __utmc=123482451; _tt_enable_cookie=1; _ttp=X09vOc9y2DDmLJujEcEn3jV4QJi.tt.1; _wingify_pc_uuid=584986f0ed1946baabedd2c37433030d; wingify_donot_track_actions=0; _gcl_au=1.1.1945979203.1741987652; _fbp=fb.1.1741987652271.117273033882608948; __utmz=123482451.1741987652.2.2.utmcsr=google|utmccn=(organic)|utmcmd=organic|utmctr=(not%20provided); _vwo_ds=3%3Aa_0%2Ct_0%3A0%241741987652%3A24.62303202%3A%3A%3A172_0%3A1; __utmc=195331455; cebs=1; _ce.clock_data=76%2C187.35.190.234%2C1%2Cb977e10d1cb26107909e97d51a688323%2CChrome%2CBR; AWSALB=1txt7EhHlTEYeX24YL85ibuXEflxCsoELi6M5qoM8lfB6xX/DQkyGLvDQyJ4pq76SgjynVLP0lBmHH/5BgtATY/BQ+lcTgGbdGFs5qcuFh3983oK0mpVsM4uO6ih; AWSALBCORS=1txt7EhHlTEYeX24YL85ibuXEflxCsoELi6M5qoM8lfB6xX/DQkyGLvDQyJ4pq76SgjynVLP0lBmHH/5BgtATY/BQ+lcTgGbdGFs5qcuFh3983oK0mpVsM4uO6ih; efs-webapi-proxy-service=1745538992.087.127.386025|316369e728ea72285cab1efcf8e12bfb; _clck=1bti8oo%7C2%7Cfvd%7C0%7C1702; bm_sz=8759200CDC7314997DBBBC10F186ABF0~YAAQ1kLbF1JSQWeWAQAAaSSCahvt735rDwf7bXB0Vz74jDqXBB5G2KXUSTIyZq7tGSVWq9z0j/bpyjZuhVjxJfct+R7wlluHmHxdLUS7/FHNFrd5hF0RplIF2zCeI+RGkM+TrLdpaBlTD2HqUasb8/8T0L2Y4BaKod15xZE1ixsG1LMD49Nei+U3gUo//DGrlm+72dZnSI/C5UlGT//evmZCkF+dMjpgb7X1d4S3pV5S1Tq6F+HB1mVtS+3yTr95qKE9dgwrDGIoXs0org0wDmmNxs03D0I8kaKgnz5EGvkOgxpxYIZ6P53R226s8H3pq4RurkTVn3Xvu4YYgkTbRMVRT55INNG96O/TpL3RmFIa+Z7jOaUPxRYCOlI9YX8LU/jq7w5+tyhPuqzrnCv0LI0stzsCFMIdbcWYs82IqJV5qNL74viGG9b1xI4AWgKL~3556932~3294273; _abck=F9EC3C09A3D6A9FDC12928F362E94A2C~0~YAAQ1kLbF8lSQWeWAQAAdyWCag0eE86KeDxRO97HpQnFLfPWnCn2NIcdSQLeFWm8g2co/fEAr8PiViBUmVOGi4Z1uGTJc42UrCvDJckTYSNvqMI3VH+MWldBmUi1tgU5Puqd4Cqtnkegu6Zacd9ex8teGyxp2VyMLSsWju3NaFj3UYDaZgy/kLlRnlxl9B94zrsUxNbCa6Rh83LCU4J9EPkD+JXV9PN/WpUjUkpwlY3ugizI/y5KdoQ1UUXANoZ4CT3oAlh6NxZPFDW03RNUn0M2Qe38keRMDtobYBvxNKaclrFYuVKFhcxAT3RrAIqy0S4x/wI5vy660ERw6Jm/vTSr1nCeT86NcbUy5hdCWrlhdcmkVH9KFuzGieOI4SMEcCOdGDC9RnZbnVzP2clxkJP6JuI20sRCJTUW5ZBdAgMaX4dkYowA5aVSe4fy6I+9K+FbjF3CchXsodi2Men0506jHj82B1AYFsFOoNTHxrgjNPK7cqX0zwNE4j/yv79CZPgOEYYMXGy8rquHs6t+kfhNCHLoqAJd5l2eGzlnUgOQPINI7e8/eM3ALhzPtNVUgQn3qieT3krTb0ElNh23M50JQyV2uG8uJ3LgJuZyuJo9sudLNx4TJB8JyKKg3jf7UR5fCpz/EdpVdC8EVbL8ZEhJ4UuCqEj+/wLhuOCGz7IiYDkCyqZ6TTrpOaDYmIXCPA==~-1~-1~-1; __utma=195331455.1635766482.1724939877.1741987669.1745543637.2; __utmz=195331455.1745543637.2.2.utmcsr=investimentos.btgpactual.com|utmccn=(referral)|utmcmd=referral|utmcct=/; nvg70002=11c413eae3287f97897b7c60fe10|0_115; ak_bmsc=D5BC590B913430034AFBF839C34CC58A~000000000000000000000000000000~YAAQ1kLbFwRYQWeWAQAAhzCCahsS4Y2UxZKLzI01aUYMdR2mXQZa/x1u9SfxjnGVDKCIRrM9Wpj6Jt4MH6VU5DU6CD9+rEst/vq8Bcd2u34F/YI4b/sydWrxZOUi2V0h/KSmVCOBvH15upROLFaxdjjDeK2fE8nD4UsWjeHI1VcH2qk4iDIcDFYGSzvc8+hQHC0qIkMggMBOWsK4Srgl5FvPLO4dfg/Q2DVzXv/pcFTMrud3vAx0QyItR0Lopb0C/tkriVxNbeEbISdXzrnWE2kV8aON1g3rfbVxcrA0C39R8Jbg2kUcIUCjOzJxvKcqQ41712yAnefr0WtYb4smY8pAqmEdJCRr+vl7aFMkqMTSPlxFgVLPhLGo5Y4dHwb0F8heS/PO4rozDGzNJjX3iADdFumciVnLrdRgSyXG5aebLX9++RaF6eX09lx0lTPmOa+yKKi+wz6KzxiWFAUK+x6qVhCnIxrSrYjNtRE=; cebsp_=11; __utma=123482451.1635766482.1724939877.1745543640.1745541132.6; BTGPRLEMODAL=true%2Ffundos-de-investimento%2Fabsolute-atenas-p-ficfirf-crpr; _ce.s=v~d0eaedf20bd8a18203691e1b77850da82765ba23~lcw~1745545849834~vir~returning~lva~1745543650933~vpv~0~as~false~v11.cs~442038~v11.s~98079ef0-2172-11f0-80c7-ab0d53c266d6~v11.sla~1745545850056~v11.send~1745545849834~lcw~1745545850056; _ga_SYLSJKSZVZ=GS1.1.1745545746.8.1.1745545856.54.0.1959685439; _ga_L71GTFBDS4=GS1.1.1745545746.8.1.1745545856.54.0.1329494482; _uetsid=5afaec70216711f0a4468379bb9676f4; _uetvid=729b7c50a77011efb38b49ac0f388941; _vwo_sn=3558085%3A3; __trf.src=encoded_eyJmaXJzdF9zZXNzaW9uIjp7InZhbHVlIjoiKG5vbmUpIiwiZXh0cmFfcGFyYW1zIjp7fX0sImN1cnJlbnRfc2Vzc2lvbiI6eyJ2YWx1ZSI6Iihub25lKSIsImV4dHJhX3BhcmFtcyI6e319LCJjcmVhdGVkX2F0IjoxNzQ1NTQ1ODU3OTAzfQ==; ttcsid_CNH4HU3C77U1PP7E2CP0=1745545745111::nKHJPKXDl_SveeBi2E3X.4.1745545858346; ttcsid=1745545745111::11NLGZriFZVSpY1JtVS9.4.1745545858346; _clsk=1gbhs9t%7C1745545858638%7C10%7C1%7Cp.clarity.ms%2Fcollect; __utmb=123482451.0.10.1745545859892; _ga_43W2WYML5H=GS1.1.1745545746.9.1.1745545859.0.0.0; _ga_9JPZP9B352=GS1.1.1745543622.7.1.1745545859.37.0.1370457545; _dd_s=rum=2&id=86d8cf9d-17f3-41e2-aad1-dcb217edb960&created=1745545742744&expire=1745546756613; BTGNAV-INVEST=["/fundos-de-investimento/produtos","/fundos-de-investimento/produtos","/fundos-de-investimento/produtos","/fundos-de-investimento/produtos","/fundos-de-investimento/produtos"]',
+            'if-none-match': 'W/"65827-B7etjPBMOBFfdJRitv0irULXt0E"',
+            'priority': "u=1, i",
+            'referer': "https://investimentos.btgpactual.com/fundos-de-investimento/produtos",
+            'sec-ch-ua': '"Chromium";v="134", "Not:A-Brand";v="24", "Google Chrome";v="134"',
+            'sec-ch-ua-mobile': "?0",
+            'sec-ch-ua-platform': '"macOS"',
+            'sec-fetch-dest': "empty",
+            'sec-fetch-mode': "cors",
+            'sec-fetch-site': "same-origin",
+            'user-agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36"
+        }
+
+        response = requests.get(url, headers=headers, params=querystring)
+
+        # Print status
+        print(f"---")
+        print(f"BTG Page {page}")
+        print(f"Status code: {response.status_code}")
+        print(f"SIZE_PER_PAGE_BTG: {SIZE_PER_PAGE_BTG}")
+
+        # Verifica se a resposta está vazia
+        data = pd.json_normalize(response.json())
+        if data.empty == True:
+            print("Data is empty")
+        else:
+            print("Data is not empty")
+            print(f"Data keys: {data.keys()}")
+
+        # Caso o status code esteja ok, adiciona os dados ao DataFrame
+        if response.status_code == 200 and data.empty == False:
+
+            # Parse response to JSON
+            data = response.json()
+
+            # Flatten the JSON data
+            webscrapping_btg_temp = pd.json_normalize(data['items']).rename(columns = {"CNPJ": "cnpj"})
+
+            # Junta com o resto dos dados
+            webscrapping_btg_result = pd.concat([webscrapping_btg_result, webscrapping_btg_temp], ignore_index=True)
+
+        else:
+            print("Request failed with status code:", response.status_code)
+
+    return webscrapping_btg_result
+
+
+# Função que junta os dados do webscrapping do BTG com os dados do webscrapping do Mais Retorno
+def webscrapping_join(
+    webscrapping_maisretorno_result: pd.DataFrame,
+    webscrapping_btg_result: pd.DataFrame
+):
+    """
+    Função que junta os dados do webscrapping do BTG com os dados do webscrapping do Mais Retorno
+    Args:
+        webscrapping_maisretorno_result (pd.DataFrame): DataFrame com dados do webscrapping do Mais Retorno
+        webscrapping_btg_result (pd.DataFrame): DataFrame com dados do webscrapping do BTG
+    Returns:
+        webscrapping_join_result: DataFrame com dados do webscrapping do BTG e do Mais Retorno
+    """
+    # Garante que o cnpj está no formato correto
+    webscrapping_btg_result = (webscrapping_btg_result
+                                .copy()
+                                .assign(cnpj = lambda _: _.cnpj.astype(str))
+                                # .assign(cnpj = lambda _: _.cnpj.str.replace(".", "", regex = True))
+    )
+
+    # Garante que o cnpj está no formato correto
+    webscrapping_maisretorno_result = (webscrapping_maisretorno_result
+                        .copy()
+                        .assign(cnpj = lambda _: _.cnpj.astype(str))
+                        # .assign(cnpj = lambda _: _.cnpj.str.replace(".", "", regex = True))
+    )
+
+    # Lista de cnpj no BTG
+    list_cnpj_btg = list(webscrapping_btg_result.cnpj.unique())
+
+    print(f"len(webscrapping_btg_result) = {len(webscrapping_btg_result)}")
+    print(f"len(webscrapping_maisretorno_result) = {len(webscrapping_maisretorno_result)}")
+
+    # Realiza join por cnpj
+    webscrapping_join_result = (webscrapping_maisretorno_result
+                                .copy()
+                                .assign(disponibilidade_btg = lambda _: _.cnpj.isin(list_cnpj_btg))
+    )
+
+    print(f"webscrapping_join_result = {webscrapping_join_result.head(5)}")
+
+    return webscrapping_join_result
+
+
+# Realiza ambos webscrappings e prepara os dados
+def webscrapping_all(
+    list_categorias: list,
+    tab_webscrapping: st.tabs,
+    MAX_PRODUCTS_BTG: int,
+    SIZE_PER_PAGE_BTG: int
+    ):
+    """
+    Função que executa ambos webscrappings e prepara os dados
+    Args:
+        list_categorias (list): Lista de categorias de ativos
+        tab_webscrapping (st.tabs): Aba de webscrapping
+        MAX_PRODUCTS_BTG (int): Número máximo de produtos do BTG
+        SIZE_PER_PAGE_BTG (int): Número de produtos por página do BTG
+    Returns:
+        webscrapping_join_result: DataFrame com dados do webscrapping do BTG e do Mais Retorno
+        webscrapping_btg_result: 
+        webscrapping_maisretorno_result:
+        dm_ativos:
+        dm_ativos_not_found:
+        list_not_found:
+    """
+    # Mostra status Progresso
+    tab_webscrapping.write(f"--- Webscrapping MaisRetorno ---")
+
+    # Executa o webscrapping do Mais Retorno
+    webscrapping_maisretorno_result, dm_ativos, dm_ativos_not_found, list_not_found = webscrapping_maisretorno(
+        list_categorias,
+        tab_webscrapping
+    )
+
+    # Mostra status Progresso
+    tab_webscrapping.write(f"--- Webscrapping BTG ---")
+
+    # Executa o webscrapping do BTG
+    webscrapping_btg_result = webscrapping_btg(
+        MAX_PRODUCTS_BTG,
+        SIZE_PER_PAGE_BTG
+    )
+
+    # Mostra status Progresso
+    tab_webscrapping.write(f"--- Webscrapping Join ---")
+    print(f"webscrapping_maisretorno_result = {webscrapping_maisretorno_result.dtypes}")
+    print(f"webscrapping_btg_result = {webscrapping_btg_result.dtypes}")
+
+    # Junta os dados do webscrapping do BTG com os dados do webscrapping do Mais Retorno
+    webscrapping_join_result = webscrapping_join(
+        webscrapping_maisretorno_result,
+        webscrapping_btg_result
+    )
+
+    return webscrapping_join_result, webscrapping_btg_result, webscrapping_maisretorno_result, dm_ativos, dm_ativos_not_found, list_not_found
+
 
 ######## Data Analysis ########
 # Função que prepara os dados para criar os gráficos
@@ -698,29 +1016,152 @@ def tab_web_scraping(
         Aqui você pode fazer webscrapping para obter dados de investimentos
     ''')
 
-    if tab_webscrapping.button("Webscrapping"):
+    # Colapsa as funcionalidades de upload e download de arquivos
+    expander_data_analisys = tab_webscrapping.expander(label = "Uploads/Downloads")
+
+    # Permite usuário dar upload de arquivo com dados no formato para construir os gráficos
+    Upload_Data_MaisRetorno = expander_data_analisys.file_uploader("Upload Webscrapping MaisRetorno", type = ["xlsx"])
+
+    ##########
+    # Caso o usuário clique no botão, o arquivo template será baixado
+    if Upload_Data_MaisRetorno is not None:
+
+        # Pega valor de bytes do arquivo
+        bytes_data = Upload_Data_MaisRetorno.getvalue()
+
+        # Le arquivo excel
+        dataframe = pd.read_excel(BytesIO(bytes_data))  
+        webscrapping_maisretorno_result = dataframe
+
+    # Caso não haja upload, usa dados dos default
+    if Upload_Data_MaisRetorno is None:
+
+        # Le arquivo com dados template
+        webscrapping_maisretorno_result = pd.read_excel("Template_Webscrapping_MaisRetorno.xlsx", engine = "openpyxl")
+
+    # Permite usuário dar upload de arquivo com dados no formato para construir os gráficos
+    Upload_Data_BTG = expander_data_analisys.file_uploader("Upload Webscrapping BTG", type = ["xlsx"])
+
+    ##########
+    # Caso o usuário clique no botão, o arquivo template será baixado
+    if Upload_Data_BTG is not None:
+
+        # Pega valor de bytes do arquivo
+        bytes_data = Upload_Data_BTG.getvalue()
+
+        # Le arquivo excel
+        dataframe = pd.read_excel(BytesIO(bytes_data))  
+        webscrapping_result_btg = dataframe
+
+    # Caso não haja upload, usa dados dos default
+    if Upload_Data_BTG is None:
+
+        # Le arquivo com dados template
+        df_result = pd.read_excel("Template_Webscrapping_BTG.xlsx", engine = "openpyxl")
+
+    ##########
+    # Caso seja clicado o botão de webscrapping do MaisRetorno
+    if tab_webscrapping.button("Webscrapping MaisRetorno"):
 
         # Executa o webscrapping
-        df_result, dm_ativos, dm_ativos_not_found, list_not_found = webscrapping(list_categorias, tab_webscrapping)    
+        webscrapping_maisretorno_result, dm_ativos, dm_ativos_not_found, list_not_found = webscrapping_maisretorno(list_categorias, tab_webscrapping)    
 
-        print(f"df_result = {df_result}")
+        print(f"webscrapping_maisretorno_result = {webscrapping_maisretorno_result}")
 
         # Nome do arquivo com resultados do webscrapping
         time_now = datetime.now().strftime("%Y-%m-%d %H-%M-%S")
-        result_file_name = f"Investimento_Webscrapping_{time_now}.xlsx"
+        result_file_name = f"Investimento_Webscrapping_MaisRetorno_{time_now}.xlsx"
 
-        # Assuming df_result is your DataFrame
+        # Assuming webscrapping_maisretorno_result is your DataFrame
         excel_buffer = io.BytesIO()
-        df_result.to_excel(excel_buffer, index=False)
+        webscrapping_maisretorno_result.to_excel(excel_buffer, index=False)
         excel_buffer.seek(0)  # Rewind the buffer
 
         # Caso o usuário clique no botão, o arquivo template será baixado
         tab_webscrapping.download_button(
-            label = "Download Webscrapping",
+            label = "Download Webscrapping MaisRetorno",
             data = excel_buffer,
             file_name = result_file_name,
             mime = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
         )    
+
+    ##########
+    # Caso seja clicado o botão de webscrapping do BTG
+    if tab_webscrapping.button("Webscrapping BTG"):
+
+        # Executa o webscrapping
+        webscrapping_btg_result = webscrapping_btg(MAX_PRODUCTS_BTG, SIZE_PER_PAGE_BTG)    
+
+        # Nome do arquivo com resultados do webscrapping
+        time_now = datetime.now().strftime("%Y-%m-%d %H-%M-%S")
+        result_file_name_btg = f"Investimento_Webscrapping_BTG_{time_now}.xlsx"
+
+        # Assuming df_result is your DataFrame
+        excel_buffer_btg = io.BytesIO()
+        webscrapping_btg_result.to_excel(excel_buffer_btg, index=False)
+        excel_buffer_btg.seek(0)  # Rewind the buffer
+
+        # Caso o usuário clique no botão, o arquivo template será baixado
+        tab_webscrapping.download_button(
+            label = "Download Webscrapping BTG",
+            data = excel_buffer_btg,
+            file_name = result_file_name_btg,
+            mime = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        )    
+
+    # ##########
+    # Caso seja clicado o botão de join webscrappings
+    if tab_webscrapping.button("Webscrapping Join"):
+
+        # Executa o webscrapping
+        webscrapping_result_join = webscrapping_join(webscrapping_maisretorno_result, webscrapping_btg_result)    
+
+        # Nome do arquivo com resultados do webscrapping
+        time_now = datetime.now().strftime("%Y-%m-%d %H-%M-%S")
+        result_file_name_join = f"Investimento_Webscrapping_Join_{time_now}.xlsx"
+
+        # Assuming df_result is your DataFrame
+        excel_buffer_join = io.BytesIO()
+        webscrapping_result_join.to_excel(excel_buffer_join, index=False)
+        excel_buffer_join.seek(0)  # Rewind the buffer
+
+        # Caso o usuário clique no botão, o arquivo template será baixado
+        tab_webscrapping.download_button(
+            label = "Download Webscrapping Join",
+            data = excel_buffer_join,
+            file_name = result_file_name_join,
+            mime = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        )
+    
+    ##########
+    # Caso seja clicado o botão de join webscrappings
+    if tab_webscrapping.button("Webscrapping All"):
+
+        # Executa o webscrapping
+        webscrapping_join_result, webscrapping_btg_result, webscrapping_maisretorno_result, dm_ativos, dm_ativos_not_found, list_not_found  = webscrapping_all(
+              list_categorias, 
+              tab_webscrapping,
+              MAX_PRODUCTS_BTG, 
+              SIZE_PER_PAGE_BTG
+        )
+
+        # Nome do arquivo com resultados do webscrapping
+        time_now = datetime.now().strftime("%Y-%m-%d %H-%M-%S")
+        result_file_name_join = f"Investimento_Webscrapping_Join_{time_now}.xlsx"
+
+        # Assuming df_result is your DataFrame
+        excel_buffer_all = io.BytesIO()
+        webscrapping_join_result.to_excel(excel_buffer_all, index=False)
+        excel_buffer_all.seek(0)  # Rewind the buffer
+
+        # Caso o usuário clique no botão, o arquivo template será baixado
+        tab_webscrapping.download_button(
+            label = "Download Webscrapping All",
+            data = excel_buffer_all,
+            file_name = result_file_name_join,
+            mime = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        )  
+    
 
     return None
 
@@ -747,5 +1188,3 @@ MAX_PROFITABILITY, MAX_VOLATILITY, MIN_PROFITABILITY, MIN_VOLATILITY, TOOTLIP_SI
 
 # Cria a segunda parte da aba de data analysis
 tab_data_analysis_part2(tab_data_analysis, df_result, SCORE_TYPE, MAX_PROFITABILITY, MAX_VOLATILITY, MIN_PROFITABILITY, MIN_VOLATILITY, TOOTLIP_SIMPLE, TOOLTIP_SIMPLE_COLUMNS)
-
-
