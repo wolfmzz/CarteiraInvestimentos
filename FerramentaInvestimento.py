@@ -703,6 +703,10 @@ def clean_to_chart(
     Returns:
         df_result_chart: DataFrame com dados limpos para criar gráficos
     """
+    # Filtra somente produtos do BTG caso BTG_AVAILABLE seja True
+    if BTG_AVAILABLE == True:
+        df_result = (df_result.copy().query("disponibilidade_btg == True"))
+
     # Convert "categoria" column to categorical data type
     df_result["categoria"] = pd.Categorical(df_result["categoria"])
 
@@ -721,10 +725,6 @@ def clean_to_chart(
         .query(f"profitability > {MIN_PROFITABILITY}")
         .query(f"volatility > {MIN_VOLATILITY}")
     )
-
-    # Filtra somente produtos do BTG caso BTG_AVAILABLE seja True
-    if BTG_AVAILABLE == True:
-        df_result_chart = (df_result_chart.copy().query("disponibilidade_btg == True"))
 
     return df_result_chart
 
@@ -751,8 +751,12 @@ def chart_interactive(
         tooltip_columns = list(df_result_chart.columns)
 
     # Create an interactive scatter plot
-    fig = px.scatter(df_result_chart, x = "volatility", y = "profitability", color = "categoria",
-                    hover_data = tooltip_columns)
+    fig = px.scatter(df_result_chart, 
+                    x = "volatility", 
+                    y = "profitability", 
+                    color = "categoria",
+                    hover_data = tooltip_columns
+                    )
     
     # Layout do gráfico
     fig.update_layout(title = f"SuperCarteira: Rentabilidade x Volatilidade (filtrado < {MAX_VOLATILITY})",
@@ -1001,10 +1005,10 @@ def tab_data_analysis_part2(
         None
     """
     # Prepara os dados para criar os gráficos
-    df_result_chart = clean_to_chart(df_result, SCORE_TYPE, MAX_PROFITABILITY, MAX_VOLATILITY, MIN_PROFITABILITY, MIN_VOLATILITY, BTG_AVAILABLE)
+    df_result_chart_clean = clean_to_chart(df_result, SCORE_TYPE, MAX_PROFITABILITY, MAX_VOLATILITY, MIN_PROFITABILITY, MIN_VOLATILITY, BTG_AVAILABLE)
 
     # Cria gráfico interativo
-    fig = chart_interactive(df_result_chart, TOOTLIP_SIMPLE, TOOLTIP_SIMPLE_COLUMNS)
+    fig = chart_interactive(df_result_chart_clean, TOOTLIP_SIMPLE, TOOLTIP_SIMPLE_COLUMNS)
 
     # Exibir o gráfico Plotly no aplicativo Streamlit
     tab_data_analysis.plotly_chart(fig, use_container_width=True)
