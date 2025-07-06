@@ -454,8 +454,7 @@ def webscrapping_maisretorno(
             # Captura a informação desse ativo e ajusta o DataFrame
             df_result_temp = (pd.json_normalize(response.json())
                     .reset_index()
-                    .assign(cnpj = lambda _: ativo)
-                    .assign(categoria = lambda _: categoria)
+                    .assign(cnpj = ativo)
                     .rename(columns = dict_rename_maisretorno)
                     .filter(list(dict_rename_maisretorno.values()))
                     .assign(score_12m = lambda _: _.profitability_12m / _.volatility_12m)
@@ -469,6 +468,7 @@ def webscrapping_maisretorno(
                     .assign(total_months = lambda _: _.positive_months + _.negative_months)
                     .assign(perc_positive_months = lambda _: _.positive_months / _.total_months)
                     .assign(perc_negative_months = lambda _: _.negative_months / _.total_months)
+                    .assign(categoria = categoria)
             )
 
             # Junta ao DataFrame de resultados
@@ -1072,13 +1072,13 @@ def tab_web_scraping(
 
         # Le arquivo excel
         dataframe = pd.read_excel(BytesIO(bytes_data))  
-        webscrapping_result_btg = dataframe
+        webscrapping_btg_result = dataframe
 
     # Caso não haja upload, usa dados dos default
     if Upload_Data_BTG is None:
 
         # Le arquivo com dados template
-        df_result = pd.read_excel("Template_Webscrapping_BTG.xlsx", engine = "openpyxl")
+        webscrapping_btg_result = pd.read_excel("Template_Webscrapping_BTG.xlsx", engine = "openpyxl")
 
     ##########
     # Caso seja clicado o botão de webscrapping do MaisRetorno
